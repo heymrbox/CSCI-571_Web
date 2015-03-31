@@ -48,16 +48,11 @@ $(document).ready(function() {
 		if($("#search_form").valid() == true){
 			//document.getElementById("result").innerHTML = "This is result area.";
 			alert($("#search_form").serialize());
-			// var chkBoxArray = [];
-			// $('.condition:checked').each(function() {
-		 //            chkBoxArray.push($(this).val());
-		 //        });
 			var data = $("#search_form").serialize();
 		$.ajax({
 			type: "GET",
 			url:'ebay_search.php',
 			data: data,
-           	//data: "keywords="+$("#keywords").val()+"&lowestPrice="+$("#lowestPrice").val()+"&highestPrice="+$("#highestPrice").val()+"&condition="+chkBoxArray,
            	//dataType:'json',
            	success: function(result){
            		alert("Success");

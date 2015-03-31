@@ -3,14 +3,16 @@
 	function getXMLFile($addressUrl){
 		//echo "url = ". $addressUrl."<br/>";
 		$xmlDoc = simplexml_load_file($addressUrl);
+		
+		echo json_encode($xmlDoc);
 
-		if(!checkXML($xmlDoc)){
-			echo "<br/><h2>Error: ".$xmlDoc->errorMessage->error->message."</h2>";
-		}else if($xmlDoc->paginationOutput->totalEntries == 0){
-			echo "<h1 align='center'>No results found</h1>";
-		}else{
-			parseXML($xmlDoc);
-		}
+		// if(!checkXML($xmlDoc)){
+		// 	echo "<br/><h2>Error: ".$xmlDoc->errorMessage->error->message."</h2>";
+		// }else if($xmlDoc->paginationOutput->totalEntries == 0){
+		// 	echo "<h1 align='center'>No results found</h1>";
+		// }else{
+		// 	parseXML($xmlDoc);
+		// }
 	}
 
 	function checkXML($xml){
@@ -125,8 +127,6 @@
 	}
 	if(empty($lowestPrice)){
 		$lowestPriceUrl = "";
-		$lowestPrice = 0;
-		$lowestPrice = (int)$lowestPrice;
 	}else{
 		$lowestPriceUrl = "&itemFilter[".$filterNum."].name=MinPrice&itemFilter[".$filterNum."].value=".$lowestPrice;
 		$filterNum++;
@@ -137,8 +137,6 @@
 	}
 	if(empty($highestPrice)){
 		$highestPriceUrl = "";
-		$highestPrice = 2147483647;
-		$highestPrice = (int)$highestPrice;
 	}else{
 		$highestPriceUrl = "&itemFilter[".$filterNum."].name=MaxPrice&itemFilter[".$filterNum."].value=".$highestPrice;
 		$filterNum++;
@@ -213,30 +211,20 @@
 	}
 	if(empty($maxHandlingTime)){
 		if($maxHandlingTime == ""){
-		    $maxHandlingTime = 1;
-			$maxHandlingTime = (int)$maxHandlingTime;
 			$maxHandlingTimeUrl = "";
 		}
 	}else{
-			$maxHandlingTime = (float)$maxHandlingTime;
 			$maxHandlingTimeUrl = "&itemFilter[".$filterNum."].name=MaxHandlingTime&itemFilter[".$filterNum."].value=".$maxHandlingTime;
 			$filterNum++;
 	}
+	$additionalInfo = "&outputSelector[0]=SellerInfo"."&outputSelector[1]=PictureURLSuperSize"."&outputSelector[2]=StoreInfo"."&paginationInput.pageNumber=1";
 
 	$query = "&keywords=".urlencode($keywords)."&sortOrder=".$sortBy."&paginationInput.entriesPerPage=".$resultsPerPage.$lowestPriceUrl.$highestPriceUrl.$conditionUrl.$buyingFormatsUrl.$sellerUrl.$freeShippingUrl.$expeditedUrl.$maxHandlingTimeUrl;
 	// $conditionValue = $condition[0]."-".$condition[1]."-".$condition[2]."-".$condition[3]."-".$condition[4]."-";
 	// $buyingFormatsValue = $buyingFormats[0]."-".$buyingFormats[1]."-".$buyingFormats[2];
 	// echo $keywords." ".$lowestPrice." ".$highestPrice." ".$conditionValue." ".$buyingFormatsValue." ".$seller." ".$freeShipping." ".$expedited." ".$maxHandlingTime." ".$sortBy." ".$resultsPerPage;
-	$addressUrl = 'http://svcs.eBay.com/services/search/FindingService/v1?siteid=0&SECURITY-APPNAME=USC6a246f-8010-46af-a674-d99cdda4927&OPERATION-NAME=findItemsAdvanced&SERVICE-VERSION=1.0.0&RESPONSE-DATA-FORMAT=XML'.$query;
-	// if($submit != NULL){
-	// 	if(is_numeric($lowestPrice)&&is_numeric($highestPrice)&&is_numeric($maxHandlingTime)){
-	// 		if($highestPrice >= 0 && $lowestPrice >=0 && $maxHandlingTime >= 1 && $maxHandlingTime == round($maxHandlingTime)){
-	// 			if($highestPrice >= $lowestPrice){
-	// 				if($keywords != NULL){
-						getXMLFile($addressUrl);
-	// 				}
-	// 			}
-	// 		}
-	// 	}	
-	// }
+	$addressUrl = 'http://svcs.eBay.com/services/search/FindingService/v1?siteid=0&SECURITY-APPNAME=USC6a246f-8010-46af-a674-d99cdda4927&OPERATION-NAME=findItemsAdvanced&SERVICE-VERSION=1.0.0&RESPONSE-DATA-FORMAT=XML'.$query.$additionalInfo;
+	
+	getXMLFile($addressUrl);
+
 ?>
