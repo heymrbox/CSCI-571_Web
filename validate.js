@@ -1,9 +1,75 @@
-function test(){
-	
+/* ---------All the Functions stay here--------- */
+
+function clearForm(){
+	var myForm = document.getElementById("search_form");
+	for(var i = 0; i<myForm.length; i++){
+		var formType = myForm[i].type.toLowerCase();
+		if(formType == "text") myForm[i].value = "";
+		if(formType == "checkbox") myForm[i].checked = false;
+		if(formType == "select-one") myForm[i].selectedIndex = 0;
+	}
+	document.getElementById("result").innerHTML = "";
+}
+
+function loadXML(){
+	var xmlhttp;
+	if (window.XMLHttpRequest){
+		// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xmlhttp = new XMLHttpRequest();
+	}else{
+		// code for IE6, IE5
+	  xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+	}
+
+	if(xmlhttp){
+		var url = constructURL;
+		xmlhttp.onreadystatechange = display;
+		xmlhttp.open("GET","ebay_search.php?",true);
+		xmlhttp.send();
+	}else{
+		alert("Error - Fail to create an XMLHttpRequest object");
+	}
+}
+
+function constructURL(){
+
+}
+function display(){
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+    	document.getElementById("result").innerHTML=xmlhttp.responseText;
+    }
 }
 
 
+/* ---------jQuery Part--------- */
+
 $(document).ready(function() {
+	$("#submit").click(function(){
+		if($("#search_form").valid() == true){
+			//document.getElementById("result").innerHTML = "This is result area.";
+			alert($("#search_form").serialize());
+			// var chkBoxArray = [];
+			// $('.condition:checked').each(function() {
+		 //            chkBoxArray.push($(this).val());
+		 //        });
+			var data = $("#search_form").serialize();
+		$.ajax({
+			type: "GET",
+			url:'ebay_search.php',
+			data: data,
+           	//data: "keywords="+$("#keywords").val()+"&lowestPrice="+$("#lowestPrice").val()+"&highestPrice="+$("#highestPrice").val()+"&condition="+chkBoxArray,
+           	//dataType:'json',
+           	success: function(result){
+           		alert("Success");
+           		$("#result").empty().append(result);
+           	}
+		})
+			//document.getElementById("submit").onClick = loadXML;
+		}
+	});
+
+	/* -------Validation Part-------- */
+
 	$("#search_form").validate({
 		highlight: function(element) {
             $(element).closest('.highlight').addClass('has-error');
@@ -54,9 +120,10 @@ $(document).ready(function() {
 
 	$(".selector").validate({
 	  	onkeyup: true,
+	  	onfocusout: true,
 	});
 
-	/* Adding customized method for validation */
+	/* -------Adding customized method for validation---------- */
 
 	jQuery.validator.addMethod("positiveNum", function(value, element) {
 	  return this.optional(element) || value >= 0;

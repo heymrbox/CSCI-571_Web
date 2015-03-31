@@ -143,7 +143,7 @@
 		$highestPriceUrl = "&itemFilter[".$filterNum."].name=MaxPrice&itemFilter[".$filterNum."].value=".$highestPrice;
 		$filterNum++;
 	}
-
+	
 	if(isset($_GET['condition'])){
 		$condition = $_GET['condition'];
 	}
@@ -224,17 +224,19 @@
 	}
 
 	$query = "&keywords=".urlencode($keywords)."&sortOrder=".$sortBy."&paginationInput.entriesPerPage=".$resultsPerPage.$lowestPriceUrl.$highestPriceUrl.$conditionUrl.$buyingFormatsUrl.$sellerUrl.$freeShippingUrl.$expeditedUrl.$maxHandlingTimeUrl;
-
+	// $conditionValue = $condition[0]."-".$condition[1]."-".$condition[2]."-".$condition[3]."-".$condition[4]."-";
+	// $buyingFormatsValue = $buyingFormats[0]."-".$buyingFormats[1]."-".$buyingFormats[2];
+	// echo $keywords." ".$lowestPrice." ".$highestPrice." ".$conditionValue." ".$buyingFormatsValue." ".$seller." ".$freeShipping." ".$expedited." ".$maxHandlingTime." ".$sortBy." ".$resultsPerPage;
 	$addressUrl = 'http://svcs.eBay.com/services/search/FindingService/v1?siteid=0&SECURITY-APPNAME=USC6a246f-8010-46af-a674-d99cdda4927&OPERATION-NAME=findItemsAdvanced&SERVICE-VERSION=1.0.0&RESPONSE-DATA-FORMAT=XML'.$query;
-	if($submit != NULL){
-		if(is_numeric($lowestPrice)&&is_numeric($highestPrice)&&is_numeric($maxHandlingTime)){
-			if($highestPrice >= 0 && $lowestPrice >=0 && $maxHandlingTime >= 1 && $maxHandlingTime == round($maxHandlingTime)){
-				if($highestPrice >= $lowestPrice){
-					if($keywords != NULL){
+	// if($submit != NULL){
+	// 	if(is_numeric($lowestPrice)&&is_numeric($highestPrice)&&is_numeric($maxHandlingTime)){
+	// 		if($highestPrice >= 0 && $lowestPrice >=0 && $maxHandlingTime >= 1 && $maxHandlingTime == round($maxHandlingTime)){
+	// 			if($highestPrice >= $lowestPrice){
+	// 				if($keywords != NULL){
 						getXMLFile($addressUrl);
-					}
-				}
-			}
-		}	
-	}
+	// 				}
+	// 			}
+	// 		}
+	// 	}	
+	// }
 ?>

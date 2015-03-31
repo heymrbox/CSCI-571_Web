@@ -22,8 +22,7 @@
 		<div class="form-group">
 			<label class="control-label col-md-2" for="keywords">Keywords: <span style="color:red">*</span></label>
       		<div class="col-md-10 highlight">
-        		<input type="text" class="form-control" name="keywords" placeholder="Enter keyword">
-        		<span class="error"></span>
+        		<input type="text" class="form-control" name="keywords" placeholder="Enter keyword" id="keywords">
       		</div>
     	</div>
     	<div class="form-group">
@@ -38,11 +37,11 @@
     	<div class="form-group">
    			<label class="control-label col-md-2" for="condition">Condition:</label>
    			<div class="col-md-10">
-	        	<lable class="checkbox-inline"><input type="checkbox" name="condition[]" value="1000">New</lable>
-	        	<lable class="checkbox-inline"><input type="checkbox" name="condition[]" value="3000">Used</lable>
-	      		<lable class="checkbox-inline"><input type="checkbox" name="condition[]" value="4000">Very Good</lable>
-				<lable class="checkbox-inline"><input type="checkbox" name="condition[]" value="5000">Good</lable>
-				<lable class="checkbox-inline"><input type="checkbox" name="condition[]" value="6000">Acceptable</lable>
+	        	<lable class="checkbox-inline"><input type="checkbox" name="condition[]" value="1000" class="condition">New</lable>
+	        	<lable class="checkbox-inline"><input type="checkbox" name="condition[]" value="3000" class="condition">Used</lable>
+	      		<lable class="checkbox-inline"><input type="checkbox" name="condition[]" value="4000" class="condition">Very Good</lable>
+				<lable class="checkbox-inline"><input type="checkbox" name="condition[]" value="5000" class="condition">Good</lable>
+				<lable class="checkbox-inline"><input type="checkbox" name="condition[]" value="6000" class="condition">Acceptable</lable>
 			</div>
     	</div>
     	<div class="form-group">
@@ -91,11 +90,12 @@
     	</div>
     	<div class="form-group">
 	       	<div id="buttons" class="col-md-12">
-	        	<input type="reset" class="btn btn-default" value="clear" onClick="window.location.href = 'http://cs-server.usc.edu:41579/hw8/index.html'">
-	        	<input type="submit" class="btn btn-primary" name="submit" value="search" onclick="test()">
+	        	<input type="button" class="btn btn-default" value="clear" onClick="clearForm()">
+	        	<input type="button" class="btn btn-primary" name="submit" value="search" id="submit">
     		</div>
     	</div>
     </form>
+    <div id="result"></div>
 </div>
 <noscript/>
 </body>
