@@ -11,34 +11,31 @@ function clearForm(){
 	document.getElementById("result").innerHTML = "";
 }
 
-function loadXML(){
-	var xmlhttp;
-	if (window.XMLHttpRequest){
-		// code for IE7+, Firefox, Chrome, Opera, Safari
-	  xmlhttp = new XMLHttpRequest();
-	}else{
-		// code for IE6, IE5
-	  xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-	}
+// function loadXML(){
+// 	var xmlhttp;
+// 	if (window.XMLHttpRequest){
+// 		// code for IE7+, Firefox, Chrome, Opera, Safari
+// 	  xmlhttp = new XMLHttpRequest();
+// 	}else{
+// 		// code for IE6, IE5
+// 	  xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+// 	}
 
-	if(xmlhttp){
-		var url = constructURL;
-		xmlhttp.onreadystatechange = display;
-		xmlhttp.open("GET","ebay_search.php?",true);
-		xmlhttp.send();
-	}else{
-		alert("Error - Fail to create an XMLHttpRequest object");
-	}
-}
+// 	if(xmlhttp){
+// 		var url = constructURL;
+// 		xmlhttp.onreadystatechange = display;
+// 		xmlhttp.open("GET","ebay_search.php?",true);
+// 		xmlhttp.send();
+// 	}else{
+// 		alert("Error - Fail to create an XMLHttpRequest object");
+// 	}
+// }
 
-function constructURL(){
-
-}
-function display(){
-	if (xmlhttp.readyState==4 && xmlhttp.status==200){
-    	document.getElementById("result").innerHTML=xmlhttp.responseText;
-    }
-}
+// function display(){
+// 	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+//     	document.getElementById("result").innerHTML=xmlhttp.responseText;
+//     }
+// }
 
 
 /* ---------jQuery Part--------- */
@@ -46,17 +43,28 @@ function display(){
 $(document).ready(function() {
 	$("#submit").click(function(){
 		if($("#search_form").valid() == true){
-			//document.getElementById("result").innerHTML = "This is result area.";
 			alert($("#search_form").serialize());
 			var data = $("#search_form").serialize();
 		$.ajax({
 			type: "GET",
 			url:'ebay_search.php',
 			data: data,
-           	//dataType:'json',
-           	success: function(result){
+           	dataType:'json',
+           	success: function(response){
            		alert("Success");
-           		$("#result").empty().append(result);
+
+				var ack = response.ack;
+				var resultCount = response.resultCount;
+				var pageNumber = response.pageNumber;
+				var itemCount = response.itemCount;
+				if(ack == "No results found"){
+					$("#result").html("<h2>No results found</h2>");
+					return;
+				}else{
+					$("#result").html(ack+" "+resultCount+" "+pageNumber+" "+itemCount);
+				}
+				
+    //        		$("#result").empty().append(ack);
            	}
 		})
 			//document.getElementById("submit").onClick = loadXML;

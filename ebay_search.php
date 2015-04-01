@@ -3,16 +3,26 @@
 	function getXMLFile($addressUrl){
 		//echo "url = ". $addressUrl."<br/>";
 		$xmlDoc = simplexml_load_file($addressUrl);
-		
-		echo json_encode($xmlDoc);
 
-		// if(!checkXML($xmlDoc)){
-		// 	echo "<br/><h2>Error: ".$xmlDoc->errorMessage->error->message."</h2>";
-		// }else if($xmlDoc->paginationOutput->totalEntries == 0){
-		// 	echo "<h1 align='center'>No results found</h1>";
-		// }else{
-		// 	parseXML($xmlDoc);
-		// }
+		if(checkXML($xmlDoc)){
+			convertToJSON($xmlDoc);
+		}else{
+			$error = array('errorMsg' => $xmlDoc->errorMessage->error->message);
+			echo json_encode($error);     //{"errorMsg":{"0":"Keyword or category ID are required."}}
+		}
+	}
+
+	function convertToJSON($xmlDoc){
+		if($xmlDoc->paginationOutput->totalEntries == 0){
+			$noResult = array('ack' => 'No results found');
+			echo json_encode($noResult);   //{"ack":"No results found"}
+		}else{
+			$result = array();
+			$ack = array('ack' => (string)$xmlDoc->ack, 'resultCount' => (string)$xmlDoc->paginationOutput->totalEntries, 'pageNumber' => (string)$xmlDoc->paginationOutput->pageNumber, 'itemCount' => (string)$xmlDoc->paginationOutput->entriesPerPage);
+
+			$result = array_merge($result,$ack);
+			echo json_encode($result);
+		}
 	}
 
 	function checkXML($xml){
@@ -23,6 +33,7 @@
 		}
 	}
 
+/* ---  Old functions for HW6   ---*/
 	function parseXML($xml){
 		echo "<h1 align='center'>".$xml->paginationOutput->totalEntries." Results for <i>".$_GET['keywords']."</i></h1>";
 		echo "<table id='result_table' cellpadding='5'>";
@@ -92,7 +103,6 @@
 ?>
 
 
-<!-- -----php entry, construction of url (with validation the same to js)----- -->
 
 <?php
 	$submit = NULL;	
