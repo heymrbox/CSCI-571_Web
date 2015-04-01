@@ -31,12 +31,6 @@ function clearForm(){
 // 	}
 // }
 
-// function display(){
-// 	if (xmlhttp.readyState==4 && xmlhttp.status==200){
-//     	document.getElementById("result").innerHTML=xmlhttp.responseText;
-//     }
-// }
-
 
 /* ---------jQuery Part--------- */
 
@@ -49,20 +43,20 @@ $(document).ready(function() {
 			type: "GET",
 			url:'ebay_search.php',
 			data: data,
-           	dataType:'json',
+           	//dataType:'json',
            	success: function(response){
            		alert("Success");
-
-				var ack = response.ack;
-				var resultCount = response.resultCount;
-				var pageNumber = response.pageNumber;
-				var itemCount = response.itemCount;
-				if(ack == "No results found"){
-					$("#result").html("<h2>No results found</h2>");
-					return;
-				}else{
-					$("#result").html(ack+" "+resultCount+" "+pageNumber+" "+itemCount);
-				}
+           		$("#result").empty().append(response);
+				// var ack = response.ack;
+				// var resultCount = response.resultCount;
+				// var pageNumber = response.pageNumber;
+				// var itemCount = response.itemCount;
+				// if(ack == "No results found"){
+				// 	$("#result").html("<h2>No results found</h2>");
+				// 	return;
+				// }else{
+				// 	$("#result").html(ack+" "+resultCount+" "+pageNumber+" "+itemCount);
+				// }
 				
     //        		$("#result").empty().append(ack);
            	}
@@ -110,8 +104,8 @@ $(document).ready(function() {
         },
         highestPrice: {
         	number: "Price should be a valid decimal number",
-        	positiveNum: "Minimum price cannot be below 0",
-        	biggerThan: "Maximum price cannot be less than minimum price",
+        	positiveNum: "Maximum price cannot be less than minimum price or below 0",
+        	biggerThan: "Maximum price cannot be less than minimum price or below 0",
         },
         shipping_time: {
         	validDigit: "Max handling time should be a valid digit",
@@ -119,11 +113,6 @@ $(document).ready(function() {
         	number: "Max handling time should be a valid digit",
         }
     }
-	});
-
-	$(".selector").validate({
-	  	onkeyup: true,
-	  	onfocusout: true,
 	});
 
 	/* -------Adding customized method for validation---------- */

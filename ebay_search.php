@@ -7,8 +7,8 @@
 		if(checkXML($xmlDoc)){
 			convertToJSON($xmlDoc);
 		}else{
-			$error = array('errorMsg' => $xmlDoc->errorMessage->error->message);
-			echo json_encode($error);     //{"errorMsg":{"0":"Keyword or category ID are required."}}
+			$error = array('errorMsg' => (string)$xmlDoc->errorMessage->error->message);
+			echo json_encode($error);     //{"errorMsg":"Keyword or category ID are required."}
 		}
 	}
 
@@ -18,11 +18,84 @@
 			echo json_encode($noResult);   //{"ack":"No results found"}
 		}else{
 			$result = array();
-			$ack = array('ack' => (string)$xmlDoc->ack, 'resultCount' => (string)$xmlDoc->paginationOutput->totalEntries, 'pageNumber' => (string)$xmlDoc->paginationOutput->pageNumber, 'itemCount' => (string)$xmlDoc->paginationOutput->entriesPerPage);
+			$head = array('ack' => (string)$xmlDoc->ack, 'resultCount' => (string)$xmlDoc->paginationOutput->totalEntries, 'pageNumber' => (string)$xmlDoc->paginationOutput->pageNumber, 'itemCount' => (string)$xmlDoc->paginationOutput->entriesPerPage);
+			$result = array_merge($result,$head);
 
-			$result = array_merge($result,$ack);
+			$num = (int)$xmlDoc->paginationOutput->entriesPerPage;
+			for($i = 0; $i < $num; $i++){
+				$item = buildItem($i, $xmlDoc);
+				$result = array_merge($result,$item);
+			}
+
 			echo json_encode($result);
 		}
+	}
+
+	function buildItem($i, $xmlDoc){
+		$itemInfo = array();
+
+		$basicInfo = array();
+		$basicInfo = buildBasicInfo($xmlDoc,$i);
+		$itemInfo = array_merge($itemInfo,$basicInfo);
+
+		$sellerInfo = array();
+		$sellerInfo = buildSellerInfo($xmlDoc,$i);
+		$itemInfo = array_merge($itemInfo, $sellerInfo);
+
+		$shippingInfo = array();
+		$shippingInfo = buildShippingInfo($xmlDoc,$i);
+		$itemInfo = array_merge($itemInfo,$shippingInfo);
+
+		$item = array('item'.$i => $itemInfo);
+		return $item;
+	}
+
+	function buildBasicInfo($xmlDoc, $i){
+		$basic_info = array(
+			'title' => (string)$xmlDoc->searchResult->item[$i]->title, 
+			'viewItemURL' => (string)$xmlDoc->searchResult->item[$i]->viewItemURL,
+			'galleryURL' => (string)$xmlDoc->searchResult->item[$i]->galleryURL,
+			'pictureURLSuperSize' => (string)$xmlDoc->searchResult->item[$i]->pictureURLSuperSize,
+			'convertedCurrentPrice' => (string)$xmlDoc->searchResult->item[$i]->sellingStatus->convertedCurrentPrice,
+			'shippingServiceCost' => (string)$xmlDoc->searchResult->item[$i]->shippingInfo->shippingServiceCost,
+			'conditionDisplayName' => (string)$xmlDoc->searchResult->item[$i]->condition->conditionDisplayName,
+			'listingType' => (string)$xmlDoc->searchResult->item[$i]->listingInfo->listingType,
+			'location' => (string)$xmlDoc->searchResult->item[$i]->location,
+			'categoryName' => (string)$xmlDoc->searchResult->item[$i]->primaryCategory->categoryName,
+			'topRatedListing' => (string)$xmlDoc->searchResult->item[$i]->topRatedListing);
+		$basic = array('basicInfo' => $basic_info);
+		return $basic;
+	}
+
+	function buildSellerInfo($xmlDoc, $i){
+		$seller_info = array(
+			'sellerUserName' => (string)$xmlDoc->searchResult->item[$i]->sellerInfo->sellerUserName,
+			'feedbackScore' => (string)$xmlDoc->searchResult->item[$i]->sellerInfo->feedbackScore,
+			'positiveFeedbackPercent' => (string)$xmlDoc->searchResult->item[$i]->sellerInfo->positiveFeedbackPercent,
+			'feedbackRatingStar' => (string)$xmlDoc->searchResult->item[$i]->sellerInfo->feedbackRatingStar,
+			'topRatedSeller' => (string)$xmlDoc->searchResult->item[$i]->sellerInfo->topRatedSeller,
+			'sellerStoreName' => (string)$xmlDoc->searchResult->item[$i]->storeInfo->storeName,
+			'sellerStoreURL' => (string)$xmlDoc->searchResult->item[$i]->storeInfo->storeURL);
+		$seller = array('sellerInfo' => $seller_info);
+		return $seller;
+	}
+
+	function buildShippingInfo($xmlDoc, $i){
+		$shipping = array();
+		$locationTagNum = count($xmlDoc->searchResult->item[$i]->shippingInfo->shipToLocations);
+		$locations = "";
+		for($k = 0; $k < $locationTagNum; $k++){
+			$locations .= (string)$xmlDoc->searchResult->item[$i]->shippingInfo->shipToLocations[$k].",";
+		}
+		$shipping_info = array(
+			'shippingType' => (string)$xmlDoc->searchResult->item[$i]->shippingInfo->shippingType,
+			'shipToLocations' => $locations,
+			'expeditedShipping' => (string)$xmlDoc->searchResult->item[$i]->shippingInfo->expeditedShipping,
+			'oneDayShippingAvailable' => (string)$xmlDoc->searchResult->item[$i]->shippingInfo->oneDayShippingAvailable,
+			'returnsAccepted' => (string)$xmlDoc->searchResult->item[$i]->returnsAccepted,
+			'handlingTime' => (string)$xmlDoc->searchResult->item[$i]->shippingInfo->handlingTime);
+		$shipping = array('shippingInfo' => $shipping_info);
+		return $shipping;
 	}
 
 	function checkXML($xml){
