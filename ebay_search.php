@@ -190,6 +190,7 @@
 	$maxHandlingTime = $maxHandlingTimeUrl = NULL;
 	$sortBy = NULL;
 	$resultsPerPage = NULL;
+	$inputPageNum = NULL;
 	$filterNum = 0;
 
 	if(isset($_GET['submit'])){
@@ -203,6 +204,9 @@
 	}
 	if(isset($_GET['resultsPerPage'])){
 		$resultsPerPage = $_GET['resultsPerPage'];
+	}
+	if(isset($_GET['inputPageNum'])){
+		$inputPageNum = $_GET['inputPageNum'];
 	}
 
 	if(isset($_GET['lowestPrice'])){
@@ -300,12 +304,11 @@
 			$maxHandlingTimeUrl = "&itemFilter[".$filterNum."].name=MaxHandlingTime&itemFilter[".$filterNum."].value=".$maxHandlingTime;
 			$filterNum++;
 	}
-	$additionalInfo = "&outputSelector[0]=SellerInfo"."&outputSelector[1]=PictureURLSuperSize"."&outputSelector[2]=StoreInfo"."&paginationInput.pageNumber=1";
+
+	$additionalInfo = "&outputSelector[0]=SellerInfo"."&outputSelector[1]=PictureURLSuperSize"."&outputSelector[2]=StoreInfo"."&paginationInput.pageNumber=".$inputPageNum;
 
 	$query = "&keywords=".urlencode($keywords)."&sortOrder=".$sortBy."&paginationInput.entriesPerPage=".$resultsPerPage.$lowestPriceUrl.$highestPriceUrl.$conditionUrl.$buyingFormatsUrl.$sellerUrl.$freeShippingUrl.$expeditedUrl.$maxHandlingTimeUrl;
-	// $conditionValue = $condition[0]."-".$condition[1]."-".$condition[2]."-".$condition[3]."-".$condition[4]."-";
-	// $buyingFormatsValue = $buyingFormats[0]."-".$buyingFormats[1]."-".$buyingFormats[2];
-	// echo $keywords." ".$lowestPrice." ".$highestPrice." ".$conditionValue." ".$buyingFormatsValue." ".$seller." ".$freeShipping." ".$expedited." ".$maxHandlingTime." ".$sortBy." ".$resultsPerPage;
+	
 	$addressUrl = 'http://svcs.eBay.com/services/search/FindingService/v1?siteid=0&SECURITY-APPNAME=USC6a246f-8010-46af-a674-d99cdda4927&OPERATION-NAME=findItemsAdvanced&SERVICE-VERSION=1.0.0&RESPONSE-DATA-FORMAT=XML'.$query.$additionalInfo;
 	
 	getXMLFile($addressUrl);
