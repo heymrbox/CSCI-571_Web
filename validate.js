@@ -123,7 +123,7 @@ $(document).ready(function(){
 		if($("#search_form").valid() == true){
 			var data = $("#search_form").serialize();
 			data += "&inputPageNum="+inputPageNum;
-			// alert(data);
+			//alert(data);
 			$.ajax({
 				type: "GET",
 				url:'ebay_search.php',
@@ -136,14 +136,52 @@ $(document).ready(function(){
 					var resultCount = response.resultCount;
 					var pageNumber = response.pageNumber;
 					var itemCount = response.itemCount;
-					var totalPage = resultCount/itemCount + 1;
+					var items = [];
+					var result = "";
+					var i = 0;
+					items[i++] = response.item0;
+					items[i++] = response.item1;
+					items[i++] = response.item2;
+					items[i++] = response.item3;
+					items[i++] = response.item4;
+					if(itemCount >= 10){	
+						items[i++] = response.item5;
+						items[i++] = response.item6;
+						items[i++] = response.item7;
+						items[i++] = response.item8;
+						items[i++] = response.item9;
+					}
+					//var totalPage = resultCount/itemCount + 1;
 
+					//Handling "previous" & "next" button in pagination
 					pageNumber == 1 ? $("#previousPage").closest('.pageBar').addClass('disabled') : $("#previousPage").closest('.pageBar').removeClass('disabled');
+
 					if(ack == "No results found"){
+						$("#pagination").hide();
 						$("#result").html("<h2>No results found</h2>");
 						return false;
 					}else{
-						$("#result").html(pageNumber);
+						var start = parseInt(itemCount)*(parseInt(pageNumber)-1)+1;
+						var end = start + parseInt(itemCount) - 1;
+						result += "<h3 id='result_head'>"+ start +"-"+ end + " items out of "+ resultCount+"</h3>";
+						for(var index = 0; index < itemCount; index++){
+							result += "<div class='media'>";
+							result += "<a class='pull-left' href='#'>";
+							result += "<img src='"+items[index].basicInfo.galleryURL+"' alt='N/A' class='media-object' width='80' height='80'/>";
+							result += "</a>";
+							result += "<div class='media-body'>";
+							result += "<div class='media-heading'><a href='"+items[index].basicInfo.viewItemURL+"'><h5>"+items[index].basicInfo.title+"</h5></a></div>";
+							var shippingCost = (items[index].basicInfo.shippingServiceCost == "0.0" || items[index].basicInfo.shippingServiceCost == "") ? "FREE Shipping" : "+ $"+items[index].basicInfo.shippingServiceCost+" for shipping";
+							result += "<h6><b>Price: $"+items[index].basicInfo.convertedCurrentPrice+"</b>&nbsp;&nbsp;&nbsp;("+shippingCost+")";
+							result += "&nbsp;&nbsp;&nbsp;<i>Location: "+items[index].basicInfo.location+"</i>";
+							if(items[index].basicInfo.topRatedListing == "true"){
+								result += "<img src='http://cs-server.usc.edu:45678/hw/hw8/itemTopRated.jpg' alt='N/A' width='40' height='40'/>";
+							}
+							result += "<a href='#'>&nbsp;&nbsp;&nbsp;View Details&nbsp;&nbsp;&nbsp;</a><a href='facebookShare'><img src='http://cs-server.usc.edu:45678/hw/hw8/fb.png' alt='N/A'/ width='20' height='20'></a></h6>";
+							result += "</div></div>";
+						}
+
+						$("#result").html(result);
 						$("#pagination").show();
 						//$("#result").html(ack+" "+resultCount+" "+pageNumber+" "+itemCount);
 					}
