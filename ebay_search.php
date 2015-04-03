@@ -20,8 +20,15 @@
 			$result = array();
 			$head = array('ack' => (string)$xmlDoc->ack, 'resultCount' => (string)$xmlDoc->paginationOutput->totalEntries, 'pageNumber' => (string)$xmlDoc->paginationOutput->pageNumber, 'itemCount' => (string)$xmlDoc->paginationOutput->entriesPerPage);
 			$result = array_merge($result,$head);
+			$num = 0;
+			if($_GET['inputPageNum'] * (int)$xmlDoc->paginationOutput->entriesPerPage <= (int)$xmlDoc->paginationOutput->totalEntries){
+				$num = ((int)$xmlDoc->paginationOutput->entriesPerPage < (int)$xmlDoc->paginationOutput->totalEntries) ? (int)$xmlDoc->paginationOutput->entriesPerPage : (int)$xmlDoc->paginationOutput->totalEntries;
+			}else{
+				$num = (int)$xmlDoc->paginationOutput->totalEntries % (int)$xmlDoc->paginationOutput->entriesPerPage;
+			}
 
-			$num = (int)$xmlDoc->paginationOutput->entriesPerPage;
+			//$bound = (int)$xmlDoc->paginationOutput->totalEntries % (int)$xmlDoc->paginationOutput->entriesPerPage;
+			//$num = ($num < $bound) ? $num : $bound;
 			for($i = 0; $i < $num; $i++){
 				$item = buildItem($i, $xmlDoc);
 				$result = array_merge($result,$item);

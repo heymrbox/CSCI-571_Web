@@ -130,41 +130,54 @@ $(document).ready(function(){
 				data: data,
 	           	dataType:'json',
 	           	success: function(response){
+	           		
 	           		//alert("Success");
-	           		//$("#result").empty().append(response);
+	           		var response_array = $.map(response, function(el) { return el; });
+	           		//alert(response_array);
 					var ack = response.ack;
-					var resultCount = response.resultCount;
-					var pageNumber = response.pageNumber;
-					var itemCount = response.itemCount;
-					var items = [];
-					var result = "";
-					var i = 0;
-					items[i++] = response.item0;
-					items[i++] = response.item1;
-					items[i++] = response.item2;
-					items[i++] = response.item3;
-					items[i++] = response.item4;
-					if(itemCount >= 10){	
-						items[i++] = response.item5;
-						items[i++] = response.item6;
-						items[i++] = response.item7;
-						items[i++] = response.item8;
-						items[i++] = response.item9;
-					}
-					//var totalPage = resultCount/itemCount + 1;
-
+					var resultCount = parseInt(response.resultCount);
+					var pageNumber = parseInt(response.pageNumber);
+					var itemCount = parseInt(response.itemCount);
 					//Handling "previous" & "next" button in pagination
-					pageNumber == 1 ? $("#previousPage").closest('.pageBar').addClass('disabled') : $("#previousPage").closest('.pageBar').removeClass('disabled');
+	           		pageNumber == 1 ? $("#previousPage").closest('.pageBar').addClass('disabled') : $("#previousPage").closest('.pageBar').removeClass('disabled');
 
 					if(ack == "No results found"){
 						$("#pagination").hide();
 						$("#result").html("<h2>No results found</h2>");
 						return false;
 					}else{
-						var start = parseInt(itemCount)*(parseInt(pageNumber)-1)+1;
-						var end = start + parseInt(itemCount) - 1;
+						var items = [];
+						var result = "";
+						var bound = 0;
+						var num = 0;
+						// num = (resultCount/itemCount) + 1;
+						// switch(num){
+						// 	case 1: $("#2").hide();
+						// 	case 2: $("#3").hide();
+						// 	case 3: $("#4").hide();
+						// 	case 4: $("#5").hide();
+						// 	break;
+						// }
+						if(pageNumber * itemCount <= resultCount){
+							bound = (resultCount < itemCount) ? resultCount : itemCount;
+						}else{
+							bound = resultCount % itemCount;
+						}
+						//alert(bound);
+						// alert(response_array[4]);
+						if(resultCount < itemCount){
+							$("#pagination").hide();
+						}
+						for(var j = 0; j<bound; j++){
+							items = response_array.slice(4);
+							// alert(items);
+						}
+
+						var start = itemCount*(pageNumber-1)+1;
+						var end = start + bound - 1;
 						result += "<h3 id='result_head'>"+ start +"-"+ end + " items out of "+ resultCount+"</h3>";
-						for(var index = 0; index < itemCount; index++){
+
+						for(var index = 0; index < bound; index++){
 							result += "<div class='media'>";
 							result += "<a class='pull-left' href='#'>";
 							result += "<img src='"+items[index].basicInfo.galleryURL+"' alt='N/A' class='media-object' width='80' height='80'/>";
