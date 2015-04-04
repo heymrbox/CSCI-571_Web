@@ -13,7 +13,7 @@
 	}
 
 	function convertToJSON($xmlDoc){
-		if($xmlDoc->paginationOutput->totalEntries == 0){
+		if($xmlDoc->paginationOutput->totalEntries == 0 || $xmlDoc->ack == "Failure"){
 			$noResult = array('ack' => 'No results found');
 			echo json_encode($noResult);   //{"ack":"No results found"}
 		}else{

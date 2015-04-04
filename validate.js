@@ -123,7 +123,7 @@ $(document).ready(function(){
 		if($("#search_form").valid() == true){
 			var data = $("#search_form").serialize();
 			data += "&inputPageNum="+inputPageNum;
-			//alert(data);
+			// alert(data);
 			$.ajax({
 				type: "GET",
 				url:'ebay_search.php',
@@ -138,10 +138,14 @@ $(document).ready(function(){
 					var resultCount = parseInt(response.resultCount);
 					var pageNumber = parseInt(response.pageNumber);
 					var itemCount = parseInt(response.itemCount);
+					var err = "";
+					if(response.errorMsg){
+						err = response.errorMsg;
+					}
 					//Handling "previous" & "next" button in pagination
 	           		pageNumber == 1 ? $("#previousPage").closest('.pageBar').addClass('disabled') : $("#previousPage").closest('.pageBar').removeClass('disabled');
 
-					if(ack == "No results found"){
+					if(ack == "No results found" || err == "Invalid keyword."){
 						$("#pagination").hide();
 						$("#result").html("<h2>No results found</h2>");
 						return false;
@@ -150,14 +154,7 @@ $(document).ready(function(){
 						var result = "";
 						var bound = 0;
 						var num = 0;
-						// num = (resultCount/itemCount) + 1;
-						// switch(num){
-						// 	case 1: $("#2").hide();
-						// 	case 2: $("#3").hide();
-						// 	case 3: $("#4").hide();
-						// 	case 4: $("#5").hide();
-						// 	break;
-						// }
+
 						if(pageNumber * itemCount <= resultCount){
 							bound = (resultCount < itemCount) ? resultCount : itemCount;
 						}else{
@@ -179,22 +176,71 @@ $(document).ready(function(){
 
 						for(var index = 0; index < bound; index++){
 							result += "<div class='media'>";
-							result += "<a class='pull-left' href='#'>";
-							result += "<img src='"+items[index].basicInfo.galleryURL+"' alt='N/A' class='media-object' width='80' height='80'/>";
+							result += "<a class='pull-left' id='item_img' href='#myModal"+index+"' data-toggle='modal'>";
+							result += "<img src='"+items[index].basicInfo.galleryURL+"' alt='N/A' class='media-object img-responsive'/>";
 							result += "</a>";
 							result += "<div class='media-body'>";
 							result += "<div class='media-heading'><a href='"+items[index].basicInfo.viewItemURL+"'><h5>"+items[index].basicInfo.title+"</h5></a></div>";
 							var shippingCost = (items[index].basicInfo.shippingServiceCost == "0.0" || items[index].basicInfo.shippingServiceCost == "") ? "FREE Shipping" : "+ $"+items[index].basicInfo.shippingServiceCost+" for shipping";
 							result += "<h6><b>Price: $"+items[index].basicInfo.convertedCurrentPrice+"</b>&nbsp;&nbsp;&nbsp;("+shippingCost+")";
-							result += "&nbsp;&nbsp;&nbsp;<i>Location: "+items[index].basicInfo.location+"</i>";
+							result += "&nbsp;&nbsp;&nbsp;<i>Location: "+items[index].basicInfo.location+"&nbsp;&nbsp;&nbsp;</i>";
 							if(items[index].basicInfo.topRatedListing == "true"){
 								result += "<img src='http://cs-server.usc.edu:45678/hw/hw8/itemTopRated.jpg' alt='N/A' width='40' height='40'/>";
 							}
-							result += "<a href='#'>&nbsp;&nbsp;&nbsp;View Details&nbsp;&nbsp;&nbsp;</a><a href='facebookShare'><img src='http://cs-server.usc.edu:45678/hw/hw8/fb.png' alt='N/A'/ width='20' height='20'></a></h6>";
-							result += "</div></div>";
+							result += "<a data-toggle='collapse' href='#detailOf"+index+"'>View Details</a>";
+							result += "<a href='facebookShare' style='margin-left:10px'><img src='http://cs-server.usc.edu:45678/hw/hw8/fb.png' alt='N/A'/ width='20' height='20'></a></h6>";
+
+							result += "<div id='detailOf"+index+"' class='collapse''><div><ul class='nav nav-tabs'><li class='active'><a href='#basicInfo"+index+"' data-toggle='tab' aria-controls='basicInfo'>Basic Info</a></li><li><a href='#sellerInfo"+index+"' data-toggle='tab' aria-controls='sellerInfo'>Seller Info</a></li><li><a href='#shippingInfo"+index+"' data-toggle='tab' aria-controls='shippingInfo'>Shipping Info</a></li></ul>";
+							
+							result += "<div class='tab-content'>";
+							result += "<div class='tab-pane active' id='basicInfo"+index+"'>";
+							result += "<h6><b>Category name</b><span style='margin-left:50px'>"+items[index].basicInfo.categoryName+"</span><h6>";
+							result += "<h6><b>Condition</b><span style='margin-left:81px'>"+items[index].basicInfo.conditionDisplayName+"</span></h6>";
+							result += "<h6><b>Buying format</b><span style='margin-left:56px'>"+items[index].basicInfo.listingType+"</span></h6></div>";
+
+							result += "<div class='tab-pane' id='sellerInfo"+index+"'>";
+							result += "<h6><b>User name</b><span style='margin-left:90px'>"+items[index].sellerInfo.sellerUserName+"</span><h6>";
+							result += "<h6><b>Feedback score</b><span style='margin-left:61px'>"+items[index].sellerInfo.feedbackScore+"</span><h6>";
+							result += "<h6><b>Positive feedback</b><span style='margin-left:51px'>"+items[index].sellerInfo.positiveFeedbackPercent+"</span><h6>";
+							result += "<h6><b>Feedback rating</b><span style='margin-left:59px'>"+items[index].sellerInfo.feedbackRatingStar+"</span><h6>";
+							var myGlyphicon = (items[index].sellerInfo.topRatedSeller == "false") ? "<span class='glyphicon glyphicon-remove' style='margin-left:100px;color:red'></span>" : "<span class='glyphicon glyphicon-ok' style='margin-left:100px;color:green'></span>";
+							result += "<h6><b>Top rated</b>"+myGlyphicon+"</h6>";
+							var myStore = (items[index].sellerInfo.sellerStoreName == "") ? "<span style='margin-left:123px'>N/A</span>" : "<a href='"+items[index].sellerInfo.sellerStoreURL+"' style='margin-left:123px'>"+items[index].sellerInfo.sellerStoreName+"</a>";
+							result += "<h6><b>Store</b>"+myStore+"</h6></div>";
+							
+							result += "<div class='tab-pane' id='shippingInfo"+index+"'>";
+							var myShippingTypeArr = items[index].shippingInfo.shippingType.match(/[A-Z]?[a-z]+|[0-9]+/g);
+							var myShippingTypeStr = "";
+							for (var i = 0; i<myShippingTypeArr.length; i++){
+								myShippingTypeStr += myShippingTypeArr[i] + " ";
+							}
+							result += "<h6><b>Shipping type</b><span style='margin-left:90px'>"+myShippingTypeStr+"</span><h6>";
+							result += "<h6><b>Handling time</b><span style='margin-left:90px'>"+items[index].shippingInfo.handlingTime+" day(s)</span><h6>";
+							result += "<h6><b>Shipping locations</b><span style='margin-left:63px'>"+items[index].shippingInfo.shipToLocations+"</span><h6>";
+							myGlyphicon = (items[index].shippingInfo.expeditedShipping == "false") ? "<span class='glyphicon glyphicon-remove' style='margin-left:62px;color:red'></span>" : "<span class='glyphicon glyphicon-ok' style='margin-left:62px;color:green'></span>";
+							result += "<h6><b>Expedited shipping</b>"+myGlyphicon+"</h6>";
+							myGlyphicon = (items[index].shippingInfo.oneDayShippingAvailable == "false") ? "<span class='glyphicon glyphicon-remove' style='margin-left:62px;color:red'></span>" : "<span class='glyphicon glyphicon-ok' style='margin-left:62px;color:green'></span>";
+							result += "<h6><b>One day shipping</b>"+myGlyphicon+"</h6>";
+							myGlyphicon = (items[index].shippingInfo.returnsAccepted == "false") ? "<span class='glyphicon glyphicon-remove' style='margin-left:62px;color:red'></span>" : "<span class='glyphicon glyphicon-ok' style='margin-left:62px;color:green'></span>";
+							result += "<h6><b>Returns accepted</b>"+myGlyphicon+"</h6></div>";
+
+							
+
+							result += "</div></div></div></div></div>";
+							
+						}
+						//Constructing modals
+						for(var i = 0; i<bound; i++){
+							var superSize = (items[i].basicInfo.pictureURLSuperSize) ? items[i].basicInfo.pictureURLSuperSize : items[i].basicInfo.galleryURL;
+							result += "<div id='myModal"+i+"' class='modal fade' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+i+"'>";
+							result += "<div class='modal-dialog'><div class='modal-content'><div class='modal-header'><button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button><h4 class='modal-title' id='myModalLabel"+i+"'>"+items[i].basicInfo.title+"</h4></div>";
+							result += "<div class='modal-body' style='text-align:center'><img src='"+superSize+"' id='superImg"+i+"' alt='N/A' class='img-responsive'/></div>";
+							result += "</div></div>"
+							result += "</div>";
 						}
 
 						$("#result").html(result);
+						// alert(result);
 						$("#pagination").show();
 						//$("#result").html(ack+" "+resultCount+" "+pageNumber+" "+itemCount);
 					}
