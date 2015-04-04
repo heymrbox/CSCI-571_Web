@@ -1,18 +1,6 @@
- /*---------All the Functions stay here--------- */
-
-function clearForm(){
-	var myForm = document.getElementById("search_form");
-	for(var i = 0; i<myForm.length; i++){
-		var formType = myForm[i].type.toLowerCase();
-		if(formType == "text") myForm[i].value = "";
-		if(formType == "checkbox") myForm[i].checked = false;
-		if(formType == "select-one") myForm[i].selectedIndex = 0;
-	}
-	document.getElementById("result").innerHTML = "";
-}
-
 /* ---------jQuery Part--------- */
-
+var arr = null;
+var share_index = 0;
 $(document).ready(function(){
 	// Initialization
 	var currentIndex = 1;
@@ -173,14 +161,19 @@ $(document).ready(function(){
 						var start = itemCount*(pageNumber-1)+1;
 						var end = start + bound - 1;
 						result += "<h3 id='result_head'>"+ start +"-"+ end + " items out of "+ resultCount+"</h3>";
-
+					
 						for(var index = 0; index < bound; index++){
+
 							result += "<div class='media'>";
+
 							result += "<a class='pull-left' id='item_img' href='#myModal"+index+"' data-toggle='modal'>";
 							result += "<img src='"+items[index].basicInfo.galleryURL+"' alt='N/A' class='media-object img-responsive'/>";
 							result += "</a>";
+
 							result += "<div class='media-body'>";
+
 							result += "<div class='media-heading'><a href='"+items[index].basicInfo.viewItemURL+"'><h5>"+items[index].basicInfo.title+"</h5></a></div>";
+
 							var shippingCost = (items[index].basicInfo.shippingServiceCost == "0.0" || items[index].basicInfo.shippingServiceCost == "") ? "FREE Shipping" : "+ $"+items[index].basicInfo.shippingServiceCost+" for shipping";
 							result += "<h6><b>Price: $"+items[index].basicInfo.convertedCurrentPrice+"</b>&nbsp;&nbsp;&nbsp;("+shippingCost+")";
 							result += "&nbsp;&nbsp;&nbsp;<i>Location: "+items[index].basicInfo.location+"&nbsp;&nbsp;&nbsp;</i>";
@@ -188,8 +181,9 @@ $(document).ready(function(){
 								result += "<img src='http://cs-server.usc.edu:45678/hw/hw8/itemTopRated.jpg' alt='N/A' width='40' height='40'/>";
 							}
 							result += "<a data-toggle='collapse' href='#detailOf"+index+"'>View Details</a>";
-							result += "<a href='facebookShare' style='margin-left:10px'><img src='http://cs-server.usc.edu:45678/hw/hw8/fb.png' alt='N/A'/ width='20' height='20'></a></h6>";
-
+							share_index = index;
+							result += "<a onclick=\"facebook_share(arr,"+share_index+")\"><img style='margin-left:10px' src='http://cs-server.usc.edu:45678/hw/hw8/fb.png' alt='N/A' width='20' height='20'/></a></h6>";
+							
 							result += "<div id='detailOf"+index+"' class='collapse''><div><ul class='nav nav-tabs'><li class='active'><a href='#basicInfo"+index+"' data-toggle='tab' aria-controls='basicInfo'>Basic Info</a></li><li><a href='#sellerInfo"+index+"' data-toggle='tab' aria-controls='sellerInfo'>Seller Info</a></li><li><a href='#shippingInfo"+index+"' data-toggle='tab' aria-controls='shippingInfo'>Shipping Info</a></li></ul>";
 							
 							result += "<div class='tab-content'>";
@@ -227,9 +221,18 @@ $(document).ready(function(){
 							
 
 							result += "</div></div></div></div></div>";
-							
+
 						}
+						// alert(arr);
+						// result += "<a onclick(facebook_share("+arr+"))>test</a>";
 						//Constructing modals
+						arr = [];
+						for(var i = 0; i<bound; i++){
+							arr[i] = $.map(items[i].basicInfo, function(el) { return el; });
+						}
+						
+						
+
 						for(var i = 0; i<bound; i++){
 							var superSize = (items[i].basicInfo.pictureURLSuperSize) ? items[i].basicInfo.pictureURLSuperSize : items[i].basicInfo.galleryURL;
 							result += "<div id='myModal"+i+"' class='modal fade' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+i+"'>";
@@ -238,6 +241,7 @@ $(document).ready(function(){
 							result += "</div></div>"
 							result += "</div>";
 						}
+
 
 						$("#result").html(result);
 						// alert(result);
@@ -319,11 +323,52 @@ $(document).ready(function(){
 	});
 });
 
+ /*---------All the Functions stay here--------- */
 
+function clearForm(){
+	var myForm = document.getElementById("search_form");
+	for(var i = 0; i<myForm.length; i++){
+		var formType = myForm[i].type.toLowerCase();
+		if(formType == "text") myForm[i].value = "";
+		if(formType == "checkbox") myForm[i].checked = false;
+		if(formType == "select-one") myForm[i].selectedIndex = 0;
+	}
+	document.getElementById("result").innerHTML = "";
+}
 
-
-
-
+function facebook_share(arr, index){
+	//index indicates the place of items
+	alert("enter");
+	alert(index);
+	alert(arr[0][0]);
+	// FB.getLoginStatus(function(response){
+	// 	if(response.status === "connected" || response.status === "not_authorized"){
+	// 		alert("1");
+	// 	}else{
+	// 		alert("0");
+	// 		FB.login(function(response){
+	// 		});
+	// 	}
+	// });
+ 
+	// FB.ui(
+	//        {
+	//          method: 'feed',
+	//          link: data.basicInfo.viewItemURL,
+	//          description: "content"
+	//          caption: 'AAA',
+ //             name: data.basicInfo.title,
+	//          picture: data.basicInfo.galleryURL
+	//        },
+	//        function(response) {
+	//          if (response && response.post_id) {
+	//            alert('Posted Successfully');
+	//          } else {
+	//            alert('Not Posted');
+	//          }
+	//        }
+	//      );	  
+}
 
 
 /*
