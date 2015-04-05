@@ -237,7 +237,7 @@ $(document).ready(function(){
 							var superSize = (items[i].basicInfo.pictureURLSuperSize) ? items[i].basicInfo.pictureURLSuperSize : items[i].basicInfo.galleryURL;
 							result += "<div id='myModal"+i+"' class='modal fade' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+i+"'>";
 							result += "<div class='modal-dialog'><div class='modal-content'><div class='modal-header'><button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button><h4 class='modal-title' id='myModalLabel"+i+"'>"+items[i].basicInfo.title+"</h4></div>";
-							result += "<div class='modal-body' style='text-align:center'><img src='"+superSize+"' id='superImg"+i+"' alt='N/A' class='img-responsive'/></div>";
+							result += "<div class='modal-body'><img src='"+superSize+"' id='superImg"+i+"' alt='N/A' class='img-responsive' style='margin-left:auto;margin-right:auto'/></div>";
 							result += "</div></div>"
 							result += "</div>";
 						}
@@ -336,38 +336,41 @@ function clearForm(){
 	document.getElementById("result").innerHTML = "";
 }
 
+
 function facebook_share(arr, index){
-	//index indicates the place of items
-	alert("enter");
-	alert(index);
-	alert(arr[0][0]);
-	// FB.getLoginStatus(function(response){
-	// 	if(response.status === "connected" || response.status === "not_authorized"){
-	// 		alert("1");
-	// 	}else{
-	// 		alert("0");
-	// 		FB.login(function(response){
-	// 		});
-	// 	}
-	// });
+	// alert("enter");
+	//index indicates the place of items 
+	var shippingCost = (arr[index][5] == "0.0" || arr[index][5] == "") ? "FREE Shipping" : "+ $"+arr[index][5]+" for shipping";
+	// var APPID = "1570498366565946";
+	// var uri = "http://cs-server.usc.edu:41579/hw8/index.html";
+	FB.login(function(response){
+		if(response.authResponse){
+			FB.ui(
+      	      {
+      	       method: 'feed',
+      	       display: 'dialog',
+      	       name: arr[index][0],
+      	       caption: 'Search Information from eBay.com ',
+      	       description: 'Price: $'+arr[index][4]+"("+shippingCost+"), Location: "+arr[index][8],
+      	       link: arr[index][1],
+      	       picture: arr[index][2]
+      	      },
+      	      function(response)  {
+      	        if (response && response.post_id) {
+      	          alert('Posted Successfully');
+      	        } else {
+      	          alert('Not Posted');
+      	        }
+     	      });
+		}else{
+			// alert("no");
+			// FB.login(function(response){
+			// 	display: 'dialog'
+			// });
+		}
+	});
  
-	// FB.ui(
-	//        {
-	//          method: 'feed',
-	//          link: data.basicInfo.viewItemURL,
-	//          description: "content"
-	//          caption: 'AAA',
- //             name: data.basicInfo.title,
-	//          picture: data.basicInfo.galleryURL
-	//        },
-	//        function(response) {
-	//          if (response && response.post_id) {
-	//            alert('Posted Successfully');
-	//          } else {
-	//            alert('Not Posted');
-	//          }
-	//        }
-	//      );	  
+	
 }
 
 
