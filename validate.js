@@ -148,14 +148,12 @@ $(document).ready(function(){
 						}else{
 							bound = resultCount % itemCount;
 						}
-						//alert(bound);
-						// alert(response_array[4]);
+
 						if(resultCount < itemCount){
 							$("#pagination").hide();
 						}
 						for(var j = 0; j<bound; j++){
 							items = response_array.slice(4);
-							// alert(items);
 						}
 
 						var start = itemCount*(pageNumber-1)+1;
@@ -163,20 +161,26 @@ $(document).ready(function(){
 						result += "<h3 id='result_head'>"+ start +"-"+ end + " items out of "+ resultCount+"</h3>";
 					
 						for(var index = 0; index < bound; index++){
+							var galleryURL = (items[index].basicInfo.galleryURL != "") ? items[index].basicInfo.galleryURL : "N/A";
+							var viewItemURL = (items[index].basicInfo.viewItemURL != "") ? items[index].basicInfo.viewItemURL : "N/A";
+							var title = (items[index].basicInfo.title != "") ? items[index].basicInfo.title : "N/A";
+							var price = (items[index].basicInfo.convertedCurrentPrice != "") ? items[index].basicInfo.convertedCurrentPrice : "N/A";
+							var location = (items[index].basicInfo.location != "") ? items[index].basicInfo.location : "N/A";
+
 
 							result += "<div class='media'>";
 
 							result += "<a class='pull-left' id='item_img' href='#myModal"+index+"' data-toggle='modal'>";
-							result += "<img src='"+items[index].basicInfo.galleryURL+"' alt='N/A' class='media-object img-responsive'/>";
+							result += "<img src='"+galleryURL+"' alt='N/A' class='media-object img-responsive'/>";
 							result += "</a>";
 
 							result += "<div class='media-body'>";
 
-							result += "<div class='media-heading'><a href='"+items[index].basicInfo.viewItemURL+"'><h5>"+items[index].basicInfo.title+"</h5></a></div>";
+							result += "<div class='media-heading'><a href='"+viewItemURL+"'><h5>"+title+"</h5></a></div>";
 
 							var shippingCost = (items[index].basicInfo.shippingServiceCost == "0.0" || items[index].basicInfo.shippingServiceCost == "") ? "FREE Shipping" : "+ $"+items[index].basicInfo.shippingServiceCost+" for shipping";
-							result += "<h6><b>Price: $"+items[index].basicInfo.convertedCurrentPrice+"</b>&nbsp;&nbsp;&nbsp;("+shippingCost+")";
-							result += "&nbsp;&nbsp;&nbsp;<i>Location: "+items[index].basicInfo.location+"&nbsp;&nbsp;&nbsp;</i>";
+							result += "<h6><b>Price: $"+price+"</b>&nbsp;&nbsp;&nbsp;("+shippingCost+")";
+							result += "&nbsp;&nbsp;&nbsp;<i>Location: "+location+"&nbsp;&nbsp;&nbsp;</i>";
 							if(items[index].basicInfo.topRatedListing == "true"){
 								result += "<img src='http://cs-server.usc.edu:45678/hw/hw8/itemTopRated.jpg' alt='N/A' width='40' height='40'/>";
 							}
@@ -186,17 +190,29 @@ $(document).ready(function(){
 							
 							result += "<div id='detailOf"+index+"' class='collapse''><div><ul class='nav nav-tabs'><li class='active'><a href='#basicInfo"+index+"' data-toggle='tab' aria-controls='basicInfo'>Basic Info</a></li><li><a href='#sellerInfo"+index+"' data-toggle='tab' aria-controls='sellerInfo'>Seller Info</a></li><li><a href='#shippingInfo"+index+"' data-toggle='tab' aria-controls='shippingInfo'>Shipping Info</a></li></ul>";
 							
+							var categoryName = (items[index].basicInfo.categoryName != "") ? items[index].basicInfo.categoryName : "N/A";
+							var conditionDisplayName = (items[index].basicInfo.conditionDisplayName != "") ? items[index].basicInfo.conditionDisplayName : "N/A";
+							var listingType = (items[index].basicInfo.listingType != "") ? items[index].basicInfo.listingType : "N/A";
+
+
 							result += "<div class='tab-content'>";
 							result += "<div class='tab-pane active' id='basicInfo"+index+"'>";
-							result += "<h6><b>Category name</b><span style='margin-left:50px'>"+items[index].basicInfo.categoryName+"</span><h6>";
-							result += "<h6><b>Condition</b><span style='margin-left:81px'>"+items[index].basicInfo.conditionDisplayName+"</span></h6>";
-							result += "<h6><b>Buying format</b><span style='margin-left:56px'>"+items[index].basicInfo.listingType+"</span></h6></div>";
+							result += "<h6><b>Category name</b><span style='margin-left:50px'>"+categoryName+"</span><h6>";
+							result += "<h6><b>Condition</b><span style='margin-left:81px'>"+conditionDisplayName+"</span></h6>";
+							result += "<h6><b>Buying format</b><span style='margin-left:56px'>"+listingType+"</span></h6></div>";
+
+							var sellerUserName = (items[index].sellerInfo.sellerUserName != "") ? items[index].sellerInfo.sellerUserName : "N/A";
+							var feedbackScore = (items[index].sellerInfo.feedbackScore != "") ? items[index].sellerInfo.feedbackScore : "N/A";
+							var positiveFeedbackPercent = (items[index].sellerInfo.positiveFeedbackPercent != "") ? items[index].sellerInfo.positiveFeedbackPercent : "N/A";
+							var feedbackRatingStar = (items[index].sellerInfo.feedbackRatingStar != "") ? items[index].sellerInfo.feedbackRatingStar : "N/A";
+
+
 
 							result += "<div class='tab-pane' id='sellerInfo"+index+"'>";
-							result += "<h6><b>User name</b><span style='margin-left:90px'>"+items[index].sellerInfo.sellerUserName+"</span><h6>";
-							result += "<h6><b>Feedback score</b><span style='margin-left:61px'>"+items[index].sellerInfo.feedbackScore+"</span><h6>";
-							result += "<h6><b>Positive feedback</b><span style='margin-left:51px'>"+items[index].sellerInfo.positiveFeedbackPercent+"</span><h6>";
-							result += "<h6><b>Feedback rating</b><span style='margin-left:59px'>"+items[index].sellerInfo.feedbackRatingStar+"</span><h6>";
+							result += "<h6><b>User name</b><span style='margin-left:90px'>"+sellerUserName+"</span><h6>";
+							result += "<h6><b>Feedback score</b><span style='margin-left:61px'>"+feedbackScore+"</span><h6>";
+							result += "<h6><b>Positive feedback</b><span style='margin-left:51px'>"+positiveFeedbackPercent+"</span><h6>";
+							result += "<h6><b>Feedback rating</b><span style='margin-left:59px'>"+feedbackRatingStar+"</span><h6>";
 							var myGlyphicon = (items[index].sellerInfo.topRatedSeller == "false") ? "<span class='glyphicon glyphicon-remove' style='margin-left:100px;color:red'></span>" : "<span class='glyphicon glyphicon-ok' style='margin-left:100px;color:green'></span>";
 							result += "<h6><b>Top rated</b>"+myGlyphicon+"</h6>";
 							var myStore = (items[index].sellerInfo.sellerStoreName == "") ? "<span style='margin-left:123px'>N/A</span>" : "<a href='"+items[index].sellerInfo.sellerStoreURL+"' style='margin-left:123px'>"+items[index].sellerInfo.sellerStoreName+"</a>";
@@ -208,9 +224,13 @@ $(document).ready(function(){
 							for (var i = 0; i<myShippingTypeArr.length; i++){
 								myShippingTypeStr += myShippingTypeArr[i] + " ";
 							}
+
+							var handlingTime = (items[index].shippingInfo.handlingTime != "") ? items[index].shippingInfo.handlingTime : "N/A";
+							var shipToLocations = (items[index].shippingInfo.shipToLocations != "") ? items[index].shippingInfo.shipToLocations : "N/A";
+
 							result += "<h6><b>Shipping type</b><span style='margin-left:90px'>"+myShippingTypeStr+"</span><h6>";
-							result += "<h6><b>Handling time</b><span style='margin-left:90px'>"+items[index].shippingInfo.handlingTime+" day(s)</span><h6>";
-							result += "<h6><b>Shipping locations</b><span style='margin-left:63px'>"+items[index].shippingInfo.shipToLocations+"</span><h6>";
+							result += "<h6><b>Handling time</b><span style='margin-left:90px'>"+handlingTime+" day(s)</span><h6>";
+							result += "<h6><b>Shipping locations</b><span style='margin-left:63px'>"+shipToLocations+"</span><h6>";
 							myGlyphicon = (items[index].shippingInfo.expeditedShipping == "false") ? "<span class='glyphicon glyphicon-remove' style='margin-left:62px;color:red'></span>" : "<span class='glyphicon glyphicon-ok' style='margin-left:62px;color:green'></span>";
 							result += "<h6><b>Expedited shipping</b>"+myGlyphicon+"</h6>";
 							myGlyphicon = (items[index].shippingInfo.oneDayShippingAvailable == "false") ? "<span class='glyphicon glyphicon-remove' style='margin-left:62px;color:red'></span>" : "<span class='glyphicon glyphicon-ok' style='margin-left:62px;color:green'></span>";
@@ -223,8 +243,7 @@ $(document).ready(function(){
 							result += "</div></div></div></div></div>";
 
 						}
-						// alert(arr);
-						// result += "<a onclick(facebook_share("+arr+"))>test</a>";
+
 						//Constructing modals
 						arr = [];
 						for(var i = 0; i<bound; i++){
@@ -244,9 +263,7 @@ $(document).ready(function(){
 
 
 						$("#result").html(result);
-						// alert(result);
 						$("#pagination").show();
-						//$("#result").html(ack+" "+resultCount+" "+pageNumber+" "+itemCount);
 					}
 	           	}
 			})
@@ -363,10 +380,7 @@ function facebook_share(arr, index){
       	        }
      	      });
 		}else{
-			// alert("no");
-			// FB.login(function(response){
-			// 	display: 'dialog'
-			// });
+			alert("Login failed");
 		}
 	});
  
