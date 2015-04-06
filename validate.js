@@ -263,7 +263,7 @@ $(document).ready(function(){
 							var superSize = (items[i].basicInfo.pictureURLSuperSize) ? items[i].basicInfo.pictureURLSuperSize : items[i].basicInfo.galleryURL;
 							result += "<div id='myModal"+i+"' class='modal fade' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+i+"'>";
 							result += "<div class='modal-dialog'><div class='modal-content'><div class='modal-header'><button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button><h4 class='modal-title' id='myModalLabel"+i+"'>"+items[i].basicInfo.title+"</h4></div>";
-							result += "<div class='modal-body'><img src='"+superSize+"' id='superImg"+i+"' alt='N/A' class='img-responsive' style='margin-left:auto;margin-right:auto'/></div>";
+							result += "<div class='modal-body'><img src='"+superSize+"' id='superImg"+i+"' alt='N/A' class='img-responsive' style='margin-left:auto;margin-right:auto;margin-top:auto;margin-bottom:auto'/></div>";
 							result += "</div></div>"
 							result += "</div>";
 						}
