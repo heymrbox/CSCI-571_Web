@@ -185,7 +185,7 @@ $(document).ready(function(){
 							result += "<div class='col-sm-11 col-xs-12 info_grid'>";  //grid
 
 							var shippingCost = (items[index].basicInfo.shippingServiceCost == "0.0" || items[index].basicInfo.shippingServiceCost == "") ? "FREE Shipping" : "+ $"+items[index].basicInfo.shippingServiceCost+" for shipping";
-							result += "<h5 class='wrap'><span><b>Price: $"+price+"</b></span><span>&nbsp;&nbsp;&nbsp;("+shippingCost+")</span>";
+							result += "<h5 class='wrap'><span><b>Price: $"+price+"</b></span><span>&nbsp;&nbsp;("+shippingCost+")</span>";
 							result += "<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Location: "+location+"</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>";
 							if(items[index].basicInfo.topRatedListing == "true"){
 								result += "<img src='http://cs-server.usc.edu:45678/hw/hw8/itemTopRated.jpg' alt='N/A' class='topRated_img'/>";
@@ -261,7 +261,7 @@ $(document).ready(function(){
 						//Constructing modals
 						for(var i = 0; i<bound; i++){
 							var superSize = (items[i].basicInfo.pictureURLSuperSize) ? items[i].basicInfo.pictureURLSuperSize : items[i].basicInfo.galleryURL;
-							result += "<div id='myModal"+i+"' class='modal fade' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+i+"'>";
+							result += "<div id='myModal"+i+"' style='margin-top:auto;margin-bottom:auto' class='modal fade' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+i+"'>";
 							result += "<div class='modal-dialog'><div class='modal-content'><div class='modal-header'><button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button><h4 class='modal-title' id='myModalLabel"+i+"'>"+items[i].basicInfo.title+"</h4></div>";
 							result += "<div class='modal-body'><img src='"+superSize+"' id='superImg"+i+"' alt='N/A' class='img-responsive' style='margin-left:auto;margin-right:auto;margin-top:auto;margin-bottom:auto'/></div>";
 							result += "</div></div>"
