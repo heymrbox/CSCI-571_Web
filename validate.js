@@ -170,23 +170,31 @@ $(document).ready(function(){
 
 							result += "<div class='media'>";
 
-							result += "<a class='pull-left' id='item_img' href='#myModal"+index+"' data-toggle='modal'>";
-							result += "<img src='"+galleryURL+"' alt='N/A' class='media-object img-responsive'/>";
-							result += "</a>";
+							result += "<div class='col-sm-1 col-xs-3'";
+
+							result += "<a class='pull-left' class='itemImgs' href='#myModal"+index+"' data-toggle='modal'>";
+							result += "<img src='"+galleryURL+"' alt='N/A' class='media-object img-responsive item_img'/>";
+							result += "</a></div>";
 
 							result += "<div class='media-body'>";
 
-							result += "<div class='media-heading'><a href='"+viewItemURL+"'><h5>"+title+"</h5></a></div>";
+							result += "<div class='col-sm-11 col-xs-offset-3 info_col'>";  //grid
+
+							result += "<div class='media-heading'><a href='"+viewItemURL+"'><h4 class='title'>"+title+"</h4></a></div></div>";
+
+							result += "<div class='col-sm-11 col-xs-12 info_grid'>";  //grid
 
 							var shippingCost = (items[index].basicInfo.shippingServiceCost == "0.0" || items[index].basicInfo.shippingServiceCost == "") ? "FREE Shipping" : "+ $"+items[index].basicInfo.shippingServiceCost+" for shipping";
-							result += "<h6><b>Price: $"+price+"</b>&nbsp;&nbsp;&nbsp;("+shippingCost+")";
-							result += "&nbsp;&nbsp;&nbsp;<i>Location: "+location+"&nbsp;&nbsp;&nbsp;</i>";
+							result += "<h5 class='wrap'><span><b>Price: $"+price+"</b></span><span>&nbsp;&nbsp;&nbsp;("+shippingCost+")</span>";
+							result += "<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Location: "+location+"</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>";
 							if(items[index].basicInfo.topRatedListing == "true"){
-								result += "<img src='http://cs-server.usc.edu:45678/hw/hw8/itemTopRated.jpg' alt='N/A' width='40' height='40'/>";
+								result += "<img src='http://cs-server.usc.edu:45678/hw/hw8/itemTopRated.jpg' alt='N/A' class='topRated_img'/>";
 							}
-							result += "<a data-toggle='collapse' href='#detailOf"+index+"'>View Details</a>";
+							result += "<span><a data-toggle='collapse' href='#detailOf"+index+"'>View Details</a>";
 							share_index = index;
-							result += "<a onclick=\"facebook_share(arr,"+share_index+")\"><img style='margin-left:10px' src='http://cs-server.usc.edu:45678/hw/hw8/fb.png' alt='N/A' width='20' height='20'/></a></h6>";
+							result += "<a onclick=\"facebook_share(arr,"+share_index+")\"><img class='facebook_icon' src='http://cs-server.usc.edu:45678/hw/hw8/fb.png' alt='N/A'/></a></span></h5></div>";
+
+							result += "<div class='col-sm-11 col-xs-12'>";  //grid
 							
 							result += "<div id='detailOf"+index+"' class='collapse''><div><ul class='nav nav-tabs'><li class='active'><a href='#basicInfo"+index+"' data-toggle='tab' aria-controls='basicInfo'>Basic Info</a></li><li><a href='#sellerInfo"+index+"' data-toggle='tab' aria-controls='sellerInfo'>Seller Info</a></li><li><a href='#shippingInfo"+index+"' data-toggle='tab' aria-controls='shippingInfo'>Shipping Info</a></li></ul>";
 							
@@ -195,28 +203,27 @@ $(document).ready(function(){
 							var listingType = (items[index].basicInfo.listingType != "") ? items[index].basicInfo.listingType : "N/A";
 
 
-							result += "<div class='tab-content'>";
+							result += "<div class='tab-content col-xs-11'>";
 							result += "<div class='tab-pane active' id='basicInfo"+index+"'>";
-							result += "<h6><b>Category name</b><span style='margin-left:50px'>"+categoryName+"</span><h6>";
-							result += "<h6><b>Condition</b><span style='margin-left:81px'>"+conditionDisplayName+"</span></h6>";
-							result += "<h6><b>Buying format</b><span style='margin-left:56px'>"+listingType+"</span></h6></div>";
+							result += "<h6 class='col-sm-2 a'><b>Category name</b></h6><h6 class='col-sm-10 b'><span>"+categoryName+"</span></h6>";
+							result += "<h6 class='col-sm-2 a'><b>Condition</b></h6><h6 class='col-sm-10 b'><span>"+conditionDisplayName+"</span></h6>";
+							result += "<h6 class='col-sm-2 a'><b>Buying format</b></h6><h6 class='col-sm-10 b'><span>"+listingType+"</span></h6></div>";
 
 							var sellerUserName = (items[index].sellerInfo.sellerUserName != "") ? items[index].sellerInfo.sellerUserName : "N/A";
 							var feedbackScore = (items[index].sellerInfo.feedbackScore != "") ? items[index].sellerInfo.feedbackScore : "N/A";
 							var positiveFeedbackPercent = (items[index].sellerInfo.positiveFeedbackPercent != "") ? items[index].sellerInfo.positiveFeedbackPercent : "N/A";
 							var feedbackRatingStar = (items[index].sellerInfo.feedbackRatingStar != "") ? items[index].sellerInfo.feedbackRatingStar : "N/A";
-
-
+							var myStore = (items[index].sellerInfo.sellerStoreName == "") ? "N/A" : "<a href='"+items[index].sellerInfo.sellerStoreURL+"'>"+items[index].sellerInfo.sellerStoreName+"</a>";
+							var myGlyphicon = (items[index].sellerInfo.topRatedSeller == "false") ? "<span class='glyphicon glyphicon-remove' style='color:red'></span>" : "<span class='glyphicon glyphicon-ok' style='color:green'></span>";
 
 							result += "<div class='tab-pane' id='sellerInfo"+index+"'>";
-							result += "<h6><b>User name</b><span style='margin-left:90px'>"+sellerUserName+"</span><h6>";
-							result += "<h6><b>Feedback score</b><span style='margin-left:61px'>"+feedbackScore+"</span><h6>";
-							result += "<h6><b>Positive feedback</b><span style='margin-left:51px'>"+positiveFeedbackPercent+"</span><h6>";
-							result += "<h6><b>Feedback rating</b><span style='margin-left:59px'>"+feedbackRatingStar+"</span><h6>";
-							var myGlyphicon = (items[index].sellerInfo.topRatedSeller == "false") ? "<span class='glyphicon glyphicon-remove' style='margin-left:100px;color:red'></span>" : "<span class='glyphicon glyphicon-ok' style='margin-left:100px;color:green'></span>";
-							result += "<h6><b>Top rated</b>"+myGlyphicon+"</h6>";
-							var myStore = (items[index].sellerInfo.sellerStoreName == "") ? "<span style='margin-left:123px'>N/A</span>" : "<a href='"+items[index].sellerInfo.sellerStoreURL+"' style='margin-left:123px'>"+items[index].sellerInfo.sellerStoreName+"</a>";
-							result += "<h6><b>Store</b>"+myStore+"</h6></div>";
+							result += "<h6 class='col-sm-2 a'><b>User name</b></h6><h6 class='col-sm-10 b'><span>"+sellerUserName+"</span></h6>";
+							result += "<h6 class='col-sm-2 a'><b>Feedback score</b></h6><h6 class='col-sm-10 b'><span>"+feedbackScore+"</span></h6>";
+							result += "<h6 class='col-sm-2 a'><b>Positive feedback</b></h6><h6 class='col-sm-10 b'><span>"+positiveFeedbackPercent+"</span></h6>";
+							result += "<h6 class='col-sm-2 a'><b>Feedback rating</b></h6><h6 class='col-sm-10 b'><span>"+feedbackRatingStar+"</span></h6>";					
+							result += "<h6 class='col-sm-2 a'><b>Top rated</b></h6><h6 class='col-sm-10 b'>"+myGlyphicon+"&nbsp;</h6>";	
+							result += "<h6 class='col-sm-2 a'><b>Store</b></h6><h6 class='col-sm-10 b'><span>"+myStore+"</span></h6>";
+							result += "</div>";
 							
 							result += "<div class='tab-pane' id='shippingInfo"+index+"'>";
 							var myShippingTypeArr = items[index].shippingInfo.shippingType.match(/[A-Z]?[a-z]+|[0-9]+/g);
@@ -228,30 +235,30 @@ $(document).ready(function(){
 							var handlingTime = (items[index].shippingInfo.handlingTime != "") ? items[index].shippingInfo.handlingTime : "N/A";
 							var shipToLocations = (items[index].shippingInfo.shipToLocations != "") ? items[index].shippingInfo.shipToLocations : "N/A";
 
-							result += "<h6><b>Shipping type</b><span style='margin-left:90px'>"+myShippingTypeStr+"</span><h6>";
-							result += "<h6><b>Handling time</b><span style='margin-left:90px'>"+handlingTime+" day(s)</span><h6>";
-							result += "<h6><b>Shipping locations</b><span style='margin-left:63px'>"+shipToLocations+"</span><h6>";
-							myGlyphicon = (items[index].shippingInfo.expeditedShipping == "false") ? "<span class='glyphicon glyphicon-remove' style='margin-left:62px;color:red'></span>" : "<span class='glyphicon glyphicon-ok' style='margin-left:62px;color:green'></span>";
-							result += "<h6><b>Expedited shipping</b>"+myGlyphicon+"</h6>";
-							myGlyphicon = (items[index].shippingInfo.oneDayShippingAvailable == "false") ? "<span class='glyphicon glyphicon-remove' style='margin-left:62px;color:red'></span>" : "<span class='glyphicon glyphicon-ok' style='margin-left:62px;color:green'></span>";
-							result += "<h6><b>One day shipping</b>"+myGlyphicon+"</h6>";
-							myGlyphicon = (items[index].shippingInfo.returnsAccepted == "false") ? "<span class='glyphicon glyphicon-remove' style='margin-left:62px;color:red'></span>" : "<span class='glyphicon glyphicon-ok' style='margin-left:62px;color:green'></span>";
-							result += "<h6><b>Returns accepted</b>"+myGlyphicon+"</h6></div>";
+							result += "<h6 class='col-sm-3 a'><b>Shipping type</b></h6><h6 class='col-sm-9 b'><span>"+myShippingTypeStr+"</span><h6>";
+							result += "<h6 class='col-sm-3 a'><b>Handling time</b></h6><h6 class='col-sm-9 b'><span>"+handlingTime+" day(s)</span><h6>";
+							result += "<h6 class='col-sm-3 a'><b>Shipping locations</b></h6><h6 class='col-sm-9 b'><span>"+shipToLocations+"</span><h6>";
+							myGlyphicon = (items[index].shippingInfo.expeditedShipping == "false") ? "<span class='glyphicon glyphicon-remove' style='color:red'></span>" : "<span class='glyphicon glyphicon-ok' style='color:green'></span>";
+							result += "<h6 class='col-sm-3 a'><b>Expedited shipping</b></h6><h6 class='col-sm-9 b'>"+myGlyphicon+"&nbsp;</h6>";
+							myGlyphicon = (items[index].shippingInfo.oneDayShippingAvailable == "false") ? "<span class='glyphicon glyphicon-remove' style='color:red'></span>" : "<span class='glyphicon glyphicon-ok' style='color:green'></span>";
+							result += "<h6 class='col-sm-3 a'><b>One day shipping</b></h6><h6 class='col-sm-9 b'>"+myGlyphicon+"&nbsp;</h6>";
+							myGlyphicon = (items[index].shippingInfo.returnsAccepted == "false") ? "<span class='glyphicon glyphicon-remove' style='color:red'></span>" : "<span class='glyphicon glyphicon-ok' style='color:green'></span>";
+							result += "<h6 class='col-sm-3 a'><b>Returns accepted</b></h6><h6 class='col-sm-9 b'>"+myGlyphicon+"&nbsp;</h6></div>";
 
 							
-
-							result += "</div></div></div></div></div>";
+							result += "</div></div>";
+							result += "</div></div></div></div>";
 
 						}
 
-						//Constructing modals
+						
 						arr = [];
 						for(var i = 0; i<bound; i++){
 							arr[i] = $.map(items[i].basicInfo, function(el) { return el; });
 						}
 						
 						
-
+						//Constructing modals
 						for(var i = 0; i<bound; i++){
 							var superSize = (items[i].basicInfo.pictureURLSuperSize) ? items[i].basicInfo.pictureURLSuperSize : items[i].basicInfo.galleryURL;
 							result += "<div id='myModal"+i+"' class='modal fade' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+i+"'>";

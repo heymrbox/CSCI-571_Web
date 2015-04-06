@@ -1,44 +1,24 @@
 .errMsg{
 	color: #a94442;
 }
-#result_table{
-			border: 1px solid black;
-			margin-top: 3px;
-			position: relative;
-			left: 200px;
-			width: 790px;
-}
-#result_table td{
-	border-bottom: thin solid #CCC;
-	padding-left: 10px;
-}
-tr.result_tr{
-	height: 180px;
-}
-td.result_col2 span{
-	font-size: 15px;
-}
-td.result_col1{
-	width: 25%;
-}
-td.result_col2{
-	width: 75%;
-	vertical-align: top;
+.info_col{
+	margin-top: -10px;
+	margin-left: -5px;
 }
 
-.first-col{
-	padding-right: 30px;
-	padding-left: 20px;
-	width: 25%;
-}
-.second-col{
-	vertical-align: top;
-	margin-top: 3px;
-	width: 75%;
-}
 
 
 @media only screen and (min-device-width : 1024px){
+	.facebook_icon{
+		margin-left: 10px;
+		width: 20px;
+		height: 20px;
+	}
+	.topRated_img{
+		margin-left: -10px;
+		width: 40px;
+		height: 30px;
+	}
 	#header{
 		margin-bottom: -10px;
 		margin-top: 10px;
@@ -63,6 +43,16 @@ td.result_col2{
 }
 
 @media only screen and (max-device-width : 1024px) and (min-device-width : 768px){
+	.facebook_icon{
+		margin-left: 10px;
+		width: 20px;
+		height: 20px;
+	}
+	.topRated_img{
+		margin-left: -5px;
+		width: 40px;
+		height: 40px;
+	}
 	#header{
 		margin-bottom: -15px;
 		margin-top: 10px;
@@ -87,6 +77,69 @@ td.result_col2{
 }
 /*For Mobile Phone*/
 @media only screen and (max-device-width : 767px) {
+	.info_col{
+		margin-left: -10px;
+	}
+	.col-sm-1{
+		margin-left: -10px;
+	}
+	.a{
+		margin-left: -13px;
+	}
+	.b{
+		margin-left: -13px;
+	}
+	.col-xs-2{
+		margin-left: -5px;
+		margin-right: -5px;
+	}
+	.col-xs-12{
+		margin-left: 0px;
+	}
+	.col-xs-11{
+		margin-left: -10px;
+	}
+	.collapse{
+		margin-left: -11px;
+	}
+	.tab-pane{
+		width: 175px;
+	}
+	#condition{
+		margin-left: 0px;
+	}
+	#buyingFormat{
+		margin-left: 0px;
+	}
+	.wrap{ 
+		margin-left: -10px; 
+		white-space: 30px;
+	}
+	.title{
+		font-size: 13px;
+	}
+	h5{
+		font-size: 12px;
+		
+	}
+	h3{
+		font-size: 17px;
+	}
+	.item_img{
+		width: 40px;
+		height: 40px;
+	}
+	.facebook_icon{
+		margin-left: 5px;
+		width: 15px;
+		height: 15px;
+	}
+
+	.topRated_img{
+		margin-left: -5px;
+		width: 30px;
+		height: 18px;
+	}
 	#header{
 		margin-bottom: -15px;
 		margin-top: 10px;

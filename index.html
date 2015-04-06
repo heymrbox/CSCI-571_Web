@@ -45,57 +45,57 @@
 	</div>
 	<form method="GET" action="" class="form-horizontal" role="form" id="search_form" data-toggle="validator">
 		<div class="form-group">
-			<label class="control-label col-md-2" for="keywords">Keywords: <span style="color:red">*</span></label>
-      		<div class="col-md-10 highlight">
+			<label class="control-label col-sm-2" for="keywords">Keywords: <span style="color:red">*</span></label>
+      		<div class="col-sm-10 highlight">
         		<input type="text" class="form-control" name="keywords" placeholder="Enter keyword" id="keywords">
       		</div>
     	</div>
     	<div class="form-group">
-  			<label class="control-label col-md-2" for="priceRange">Price Range:</label>
-  				<div class="col-md-5 highlight">
+  			<label class="control-label col-sm-2" for="priceRange">Price Range:</label>
+  				<div class="col-sm-5 highlight">
 					<input type="text" class="form-control" id="lowestPrice" name="lowestPrice" placeholder="from ($)">
 				</div>
-				<div class="col-md-5 highlight">
+				<div class="col-sm-5 highlight">
 					<input type="text" class="form-control" id="highestPrice" name="highestPrice" placeholder="to ($)">
 				</div>
     	</div>
     	<div class="form-group">
-   			<label class="control-label col-md-2" for="condition">Condition:</label>
-   			<div class="col-md-10">
+   			<label class="control-label col-sm-2" for="condition">Condition:</label>
+   			<div class="col-sm-10">
 	        	<lable class="checkbox-inline"><input type="checkbox" name="condition[]" value="1000" class="condition">New</lable>
 	        	<lable class="checkbox-inline"><input type="checkbox" name="condition[]" value="3000" class="condition">Used</lable>
 	      		<lable class="checkbox-inline"><input type="checkbox" name="condition[]" value="4000" class="condition">Very Good</lable>
 				<lable class="checkbox-inline"><input type="checkbox" name="condition[]" value="5000" class="condition">Good</lable>
-				<lable class="checkbox-inline"><input type="checkbox" name="condition[]" value="6000" class="condition">Acceptable</lable>
+				<lable class="checkbox-inline" id="condition"><input type="checkbox" name="condition[]" value="6000" class="condition">Acceptable</lable>
 			</div>
     	</div>
     	<div class="form-group">
-   			<label class="control-label col-md-2" for="buyingFormats">Buying formats:</label>
-       		<div class="col-md-10">
+   			<label class="control-label col-sm-2" for="buyingFormats">Buying formats:</label>
+       		<div class="col-sm-10">
 	        	<lable class="checkbox-inline"><input type="checkbox" name="buyingFormats[]" value="FixedPrice">Buy It Now</lable>
 	        	<lable class="checkbox-inline"><input type="checkbox" name="buyingFormats[]" value="Auction">Auction</lable>
-	      		<lable class="checkbox-inline"><input type="checkbox" name="buyingFormats[]" value="Classified">Classified Ads</lable>
+	      		<lable class="checkbox-inline" id="buyingFormat"><input type="checkbox" name="buyingFormats[]" value="Classified">Classified Ads</lable>
     		</div>
     	</div>
     	<div class="form-group">
-   			<label class="control-label col-md-2" for="seller">Seller:</label>
-       		<div class="col-md-10">
+   			<label class="control-label col-sm-2" for="seller">Seller:</label>
+       		<div class="col-sm-10">
         		<lable class="checkbox-inline"><input type="checkbox" name="seller" value="true">Return Accepted</lable>
     		</div>
     	</div>
     	<div class="form-group">
-	       	<label class="control-label col-md-2" for="shipping">Shipping:</label>
-	       	<div class="col-md-10">
+	       	<label class="control-label col-sm-2" for="shipping">Shipping:</label>
+	       	<div class="col-sm-10">
 	        	<lable class="checkbox-inline"><input type="checkbox" name="freeShipping" value="true">Free Shipping</lable>
-	        	<lable class="checkbox-inline"><input type="checkbox" name="expedited" value="Expedited">Expedited Shipping Available</lable>
+	        	<lable class="checkbox-inline"><input type="checkbox" name="expedited" value="Expedited">Expedited Shipping</lable>
 	        	<div class="highlight">
 	        	<input type="text" class="form-control" style="margin-top:10px" name="shipping_time" placeholder="Max handling time(days)">
 	        	</div>
     		</div>
     	</div>
     	<div class="form-group">
-	       	<label class="control-label col-md-2" for="sortBy">Sort by:</label>
-	       	<div class="col-md-10">
+	       	<label class="control-label col-sm-2" for="sortBy">Sort by:</label>
+	       	<div class="col-sm-10">
 	        	<select class="form-control" name="sortBy">
 				  	<option value="BestMatch" selected="selected">Best Match</option>
 					<option value="CurrentPriceHighest">Price:&nbsp;highest first</option>
@@ -105,8 +105,8 @@
     		</div>
     	</div>
     	<div class="form-group">
-	       	<label class="control-label col-md-2" for="resultsPerPage">Results per page:</label>
-	       	<div class="col-md-10">
+	       	<label class="control-label col-sm-2" for="resultsPerPage">Results per page:</label>
+	       	<div class="col-sm-10">
 	        	<select class="form-control" name="resultsPerPage">
 				  	<option value="5" selected="selected">5</option>
 					<option value="10">10</option>
@@ -114,14 +114,14 @@
     		</div>
     	</div>
     	<div class="form-group">
-	       	<div id="buttons" class="col-md-12">
+	       	<div id="buttons" class="col-sm-12">
 	        	<input type="button" class="btn btn-default" id="clear" value="clear" onClick="clearForm()">
 	        	<input type="button" class="btn btn-primary" name="submit" value="search" id="submit">
     		</div>
     	</div>
     </form>
-    <div id="result" style="margin-left:50px"></div>
-    <nav id="pagination" style="margin-left:50px">
+    <div id="result"></div>
+    <nav id="pagination" style="margin-left:20px">
 	  <ul class="pagination">
 	    <li class="pageBar">
 	      <a aria-label="Previous" id="previousPage">
