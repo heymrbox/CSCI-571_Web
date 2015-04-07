@@ -215,9 +215,9 @@ $(document).ready(function(){
 
 							result += "<div class='tab-content col-xs-11'>";
 							result += "<div class='tab-pane active' id='basicInfo"+index+"'>";
-							result += "<h6 class='col-sm-2 a'><b>Category name</b></h6><h6 class='col-sm-10 b'><span>"+categoryName+"</span></h6>";
-							result += "<h6 class='col-sm-2 a'><b>Condition</b></h6><h6 class='col-sm-10 b'><span>"+conditionDisplayName+"</span></h6>";
-							result += "<h6 class='col-sm-2 a'><b>Buying format</b></h6><h6 class='col-sm-10 b'><span>"+listingType+"</span></h6></div>";
+							result += "<h6 class='col-sm-3 a'><b>Category name</b></h6><h6 class='col-sm-9 b'><span>"+categoryName+"</span></h6>";
+							result += "<h6 class='col-sm-3 a'><b>Condition</b></h6><h6 class='col-sm-9 b'><span>"+conditionDisplayName+"</span></h6>";
+							result += "<h6 class='col-sm-3 a'><b>Buying format</b></h6><h6 class='col-sm-9 b'><span>"+listingType+"</span></h6></div>";
 
 							var sellerUserName = (items[index].sellerInfo.sellerUserName != "") ? items[index].sellerInfo.sellerUserName : "N/A";
 							var feedbackScore = (items[index].sellerInfo.feedbackScore != "") ? items[index].sellerInfo.feedbackScore : "N/A";
@@ -227,12 +227,12 @@ $(document).ready(function(){
 							var myGlyphicon = (items[index].sellerInfo.topRatedSeller == "false") ? "<span class='glyphicon glyphicon-remove' style='color:red'></span>" : "<span class='glyphicon glyphicon-ok' style='color:green'></span>";
 
 							result += "<div class='tab-pane' id='sellerInfo"+index+"'>";
-							result += "<h6 class='col-sm-2 a'><b>User name</b></h6><h6 class='col-sm-10 b'><span>"+sellerUserName+"</span></h6>";
-							result += "<h6 class='col-sm-2 a'><b>Feedback score</b></h6><h6 class='col-sm-10 b'><span>"+feedbackScore+"</span></h6>";
-							result += "<h6 class='col-sm-2 a'><b>Positive feedback</b></h6><h6 class='col-sm-10 b'><span>"+positiveFeedbackPercent+"</span></h6>";
-							result += "<h6 class='col-sm-2 a'><b>Feedback rating</b></h6><h6 class='col-sm-10 b'><span>"+feedbackRatingStar+"</span></h6>";					
-							result += "<h6 class='col-sm-2 a'><b>Top rated</b></h6><h6 class='col-sm-10 b'>"+myGlyphicon+"&nbsp;</h6>";	
-							result += "<h6 class='col-sm-2 a'><b>Store</b></h6><h6 class='col-sm-10 b'><span>"+myStore+"</span></h6>";
+							result += "<h6 class='col-sm-3 a'><b>User name</b></h6><h6 class='col-sm-9 b'><span>"+sellerUserName+"</span></h6>";
+							result += "<h6 class='col-sm-3 a'><b>Feedback score</b></h6><h6 class='col-sm-9 b'><span>"+feedbackScore+"</span></h6>";
+							result += "<h6 class='col-sm-3 a'><b>Positive feedback</b></h6><h6 class='col-sm-9 b'><span>"+positiveFeedbackPercent+"</span></h6>";
+							result += "<h6 class='col-sm-3 a'><b>Feedback rating</b></h6><h6 class='col-sm-9 b'><span>"+feedbackRatingStar+"</span></h6>";					
+							result += "<h6 class='col-sm-3 a'><b>Top rated</b></h6><h6 class='col-sm-9 b'>"+myGlyphicon+"&nbsp;</h6>";	
+							result += "<h6 class='col-sm-3 a'><b>Store</b></h6><h6 class='col-sm-9 b'><span>"+myStore+"</span></h6>";
 							result += "</div>";
 							
 							result += "<div class='tab-pane' id='shippingInfo"+index+"'>";
