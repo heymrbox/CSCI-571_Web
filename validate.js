@@ -1,11 +1,14 @@
 /* ---------jQuery Part--------- */
 var arr = null;
 var share_index = 0;
-$(document).ready(function(){
-	// Initialization
-	var currentIndex = 1;
-	var inputPageNum = currentIndex;
-	var previousIndex = 1;
+var currentIndex = 1;
+var inputPageNum = currentIndex;
+var previousIndex = 1;
+
+function init() {
+	currentIndex = 1;
+	inputPageNum = currentIndex;
+	previousIndex = 1;
 	$("#1").html(1);
 	$("#2").html(2);
 	$("#3").html(3);
@@ -15,7 +18,13 @@ $(document).ready(function(){
 	$("#1").closest('.pageBar').addClass('active');
 	$("#previousPage").closest('.pageBar').addClass('disabled');
 	$("#pagination").hide();
+}
 
+
+$(document).ready(function(){
+	// Initialization
+	init();
+	
 	// Clickable functions
 	$("#clear").click(function(){
 		$("#"+previousIndex).closest('.pageBar').removeClass('active');
@@ -23,6 +32,7 @@ $(document).ready(function(){
 		currentIndex = 1;
 		inputPageNum = currentIndex;
 		$("#1").closest('.pageBar').addClass('active');
+		init();
 	})
 
 	$("#previousPage").click(function(){
@@ -185,14 +195,14 @@ $(document).ready(function(){
 							result += "<div class='col-sm-11 col-xs-12 info_grid'>";  //grid
 
 							var shippingCost = (items[index].basicInfo.shippingServiceCost == "0.0" || items[index].basicInfo.shippingServiceCost == "") ? "FREE Shipping" : "+ $"+items[index].basicInfo.shippingServiceCost+" for shipping";
-							result += "<h5 class='wrap'><span><b>Price: $"+price+"</b></span><span>&nbsp;&nbsp;("+shippingCost+")</span>";
-							result += "<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Location: "+location+"</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>";
+							result += "<p><h5 class='wrap'><b>Price: $"+price+"</b>&nbsp;&nbsp;("+shippingCost+")";
+							result += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Location: "+location+"</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 							if(items[index].basicInfo.topRatedListing == "true"){
 								result += "<img src='http://cs-server.usc.edu:45678/hw/hw8/itemTopRated.jpg' alt='N/A' class='topRated_img'/>";
 							}
 							result += "<span><a data-toggle='collapse' href='#detailOf"+index+"'>View Details</a>";
 							share_index = index;
-							result += "<a onclick=\"facebook_share(arr,"+share_index+")\"><img class='facebook_icon' src='http://cs-server.usc.edu:45678/hw/hw8/fb.png' alt='N/A'/></a></span></h5></div>";
+							result += "<a onclick=\"facebook_share(arr,"+share_index+")\"><img class='facebook_icon' src='http://cs-server.usc.edu:45678/hw/hw8/fb.png' alt='N/A'/></a></span></h5></p></div>";
 
 							result += "<div class='col-sm-11 col-xs-12'>";  //grid
 							

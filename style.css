@@ -116,13 +116,15 @@
 	}
 	.wrap{ 
 		margin-left: -10px; 
-		white-space: 20px;
+		white-space: 10px;
+		line-height: 130%;
 	}
 	.title{
 		font-size: 13px;
+		margin-bottom: -5px;
 	}
 	h5{
-		font-size: 12px;
+		font-size: 11px;
 		
 	}
 	h3{
