@@ -36,6 +36,9 @@ $(document).ready(function(){
 	})
 
 	$("#previousPage").click(function(){
+		if($("#previousPage").closest('.pageBar').hasClass('disabled')){
+			return false;
+		}
 		if(inputPageNum == 1){
 			$("#previousPage").closest('.pageBar').addClass('disabled');
 			return false;
@@ -62,6 +65,9 @@ $(document).ready(function(){
 		}	
 	})
 	$("#nextPage").click(function(){
+		if($("#nextPage").closest('.pageBar').hasClass('disabled')){
+			return false;
+		}
 		if(currentIndex == 5){
 			$("#5").closest('.pageBar').removeClass('active');
 			var currentPage = $("#"+currentIndex).text();
@@ -82,6 +88,9 @@ $(document).ready(function(){
 		}
 	})
 	$("#1").click(function(){
+		if($("#1").closest('.pageBar').hasClass('disabled')){
+			return false;
+		}
 		currentIndex = 1;
 		inputPageNum = $("#1").text();
 		$("#"+previousIndex).closest('.pageBar').removeClass('active');
@@ -89,6 +98,9 @@ $(document).ready(function(){
 		previousIndex = 1;
 	})
 	$("#2").click(function(){
+		if($("#2").closest('.pageBar').hasClass('disabled')){
+			return false;
+		}
 		currentIndex = 2;
 		inputPageNum = $("#2").text();
 		$("#"+previousIndex).closest('.pageBar').removeClass('active');
@@ -96,6 +108,9 @@ $(document).ready(function(){
 		previousIndex = 2;
 	})
 	$("#3").click(function(){
+		if($("#3").closest('.pageBar').hasClass('disabled')){
+			return false;
+		}
 		currentIndex = 3;
 		inputPageNum = $("#3").text();
 		$("#"+previousIndex).closest('.pageBar').removeClass('active');
@@ -103,6 +118,9 @@ $(document).ready(function(){
 		previousIndex = 3;
 	})
 	$("#4").click(function(){
+		if($("#4").closest('.pageBar').hasClass('disabled')){
+			return false;
+		}
 		currentIndex = 4;
 		inputPageNum = $("#4").text();
 		$("#"+previousIndex).closest('.pageBar').removeClass('active');
@@ -110,6 +128,9 @@ $(document).ready(function(){
 		previousIndex = 4;
 	})
 	$("#5").click(function(){
+		if($("#5").closest('.pageBar').hasClass('disabled')){
+			return false;
+		}
 		currentIndex = 5;
 		inputPageNum = $("#5").text();
 		$("#"+previousIndex).closest('.pageBar').removeClass('active');
@@ -117,10 +138,34 @@ $(document).ready(function(){
 		previousIndex = 5;
 	})
 
+	$("#search_form").change(function() {
+	  $(this).closest('form').data('changed', true);
+	});
+
+
 	$("#submit, #1, #2, #3, #4, #5, #previousPage, #nextPage").click(function(){
 		if($("#search_form").valid() == true){
 			var data = $("#search_form").serialize();
+			if($(this).closest('form').data('changed')) {
+			     inputPageNum = 1;
+			     $("#"+previousIndex).closest('.pageBar').removeClass('active');
+			     init();
+			  }
 			data += "&inputPageNum="+inputPageNum;
+			for(var i = 1 ; i<=5; i++){
+				// if($("#"+i).closest('.pageBar').hasClass("disabled")){
+				// 	 $("#"+i).closest('.pageBar').removeClass("disabled");
+				// 	// $("#"+i).hide();
+				// }
+				if($("#"+i).is(":visible")){
+					continue;
+				}else{
+					$("#"+i).show();
+				}
+			}
+			if($("#nextPage").closest('.pageBar').hasClass("disabled")){
+				$("#nextPage").closest('.pageBar').removeClass("disabled");
+			}
 			// alert(data);
 			$.ajax({
 				type: "GET",
@@ -143,6 +188,18 @@ $(document).ready(function(){
 					//Handling "previous" & "next" button in pagination
 	           		pageNumber == 1 ? $("#previousPage").closest('.pageBar').addClass('disabled') : $("#previousPage").closest('.pageBar').removeClass('disabled');
 
+	           		for(var i = 1; i <= 5; i++){
+	           			if(parseInt($("#"+i).text()) * itemCount >= resultCount){
+	           				for(var j = i+1; j<=5; j++){
+	           					//$("#"+j).closest('.pageBar').addClass('disabled');
+	           					$("#"+j).hide();
+	           				}
+	           				break;
+	           			}
+	           		}
+	           		if(pageNumber * itemCount >= resultCount){
+	           			$("#nextPage").closest('.pageBar').addClass('disabled');
+	           		}
 					if(ack == "No results found" || err == "Invalid keyword."){
 						$("#pagination").hide();
 						$("#result").html("<h2>No results found</h2>");
