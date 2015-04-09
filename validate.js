@@ -153,10 +153,6 @@ $(document).ready(function(){
 			  }
 			data += "&inputPageNum="+inputPageNum;
 			for(var i = 1 ; i<=5; i++){
-				// if($("#"+i).closest('.pageBar').hasClass("disabled")){
-				// 	 $("#"+i).closest('.pageBar').removeClass("disabled");
-				// 	// $("#"+i).hide();
-				// }
 				if($("#"+i).is(":visible")){
 					continue;
 				}else{
@@ -166,7 +162,7 @@ $(document).ready(function(){
 			if($("#nextPage").closest('.pageBar').hasClass("disabled")){
 				$("#nextPage").closest('.pageBar').removeClass("disabled");
 			}
-			// alert(data);
+
 			$.ajax({
 				type: "GET",
 				url:'ebay_search.php',
@@ -191,7 +187,6 @@ $(document).ready(function(){
 	           		for(var i = 1; i <= 5; i++){
 	           			if(parseInt($("#"+i).text()) * itemCount >= resultCount){
 	           				for(var j = i+1; j<=5; j++){
-	           					//$("#"+j).closest('.pageBar').addClass('disabled');
 	           					$("#"+j).hide();
 	           				}
 	           				break;
@@ -429,7 +424,6 @@ function clearForm(){
 
 
 function facebook_share(arr, index){
-	// alert("enter");
 	//index indicates the place of items 
 	var shippingCost = (arr[index][5] == "0.0" || arr[index][5] == "") ? "FREE Shipping" : "+ $"+arr[index][5]+" for shipping";
 	// var APPID = "1570498366565946";
@@ -461,39 +455,3 @@ function facebook_share(arr, index){
 	
 }
 
-
-/*
-function validation(){
-		var keywords = document.getElementsByName("keywords")[0].value;
-		var lowestPrice = document.getElementsByName("lowestPrice")[0].value;
-		var highestPrice = document.getElementsByName("highestPrice")[0].value;
-		var maxHandlingTime = document.getElementsByName("shipping_time")[0].value;
-		var errorMessage = "";
-		if(maxHandlingTime == ""){
-			maxHandlingTime = 1;
-		}
-		if(isNaN(lowestPrice) || isNaN(highestPrice)){
-			errorMessage = errorMessage + "Price can only be numbers\n\n";
-		}
-		if(isNaN(maxHandlingTime) || parseFloat(maxHandlingTime) < 1){
-			errorMessage = errorMessage + "Handling Time must be numbers and should not be smaller than one\n\n";
-		}
-		if(maxHandlingTime % 1 !== 0){
-			errorMessage = errorMessage + "Handling Time can only be integer\n\n";
-		}
-		if(parseFloat(lowestPrice) < 0 || parseFloat(highestPrice) < 0){
-			errorMessage = errorMessage + "Price cannot be negative\n\n";
-		}else if(parseFloat(highestPrice) < parseFloat(lowestPrice)){
-			errorMessage = errorMessage + "Invalid Price Range\n\n";
-		}
-		if(keywords){
-
-		}else{
-			errorMessage = errorMessage + "Keywords required\n\n";
-		}
-		if (errorMessage) {
-			alert(errorMessage);
-		}	
-		return true;
-	}
-	*/
